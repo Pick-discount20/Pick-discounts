@@ -24,8 +24,9 @@ import { getAssetPath } from '@/utils/assetPath';
 function SearchResultsContent() {
   const searchParams = useSearchParams();
   const queryParam = searchParams.get('q') || '';
-  const locationParam = searchParams.get('location') || 'All Bangalore';
+  const locationParam = searchParams.get('location') || 'Ahmedabad, Gujarat';
   const categoryParam = searchParams.get('category') || '';
+  const radiusParam = searchParams.get('radius') || '5';
 
   // Layout mode: 'list' | 'map'
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
@@ -33,12 +34,12 @@ function SearchResultsContent() {
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Filter State
+  // Filter State (defaults to 5 km search radius)
   const initialFilters: FilterState = {
     categories: categoryParam ? [categoryParam] : [],
     minRating: 0,
     prices: [],
-    maxDistance: 20,
+    maxDistance: Number(radiusParam) || 5,
     openNowOnly: false,
     verifiedOnly: false,
   };
@@ -62,9 +63,15 @@ function SearchResultsContent() {
       }
 
       // Location match
-      if (locationParam && locationParam !== 'All Bangalore') {
-        if (!biz.locality.toLowerCase().includes(locationParam.toLowerCase())) {
-          return false;
+      if (locationParam) {
+        const loc = locationParam.toLowerCase();
+        const hasSpecificLocalityMatch = DEMO_BUSINESSES.some(
+          (b) => b.locality.toLowerCase().includes(loc) || b.city.toLowerCase().includes(loc)
+        );
+        if (hasSpecificLocalityMatch) {
+          if (!biz.locality.toLowerCase().includes(loc) && !biz.city.toLowerCase().includes(loc)) {
+            return false;
+          }
         }
       }
 
@@ -140,17 +147,21 @@ function SearchResultsContent() {
           <div className="absolute inset-0 bg-[#14213D]/70" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="min-w-0">
+          <div className="min-w-0 space-y-1">
             <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">
               {queryParam
                 ? `Results for “${queryParam}”`
                 : categoryParam
-                ? `${categoryParam} in Bangalore`
+                ? `${categoryParam}`
                 : 'Explore Verified Local Businesses'}
             </h1>
-            <p className="text-xs text-slate-300 mt-0.5">
-              Discover audited services and verified customer reviews across {locationParam || 'Bangalore'}
-            </p>
+            <div className="flex items-center gap-2 flex-wrap text-xs text-slate-300">
+              <span>Verified local service providers</span>
+              <span className="w-1 h-1 rounded-full bg-slate-400" />
+              <span className="inline-flex items-center gap-1 font-bold text-[#2A9D8F] bg-[#2A9D8F]/15 px-2 py-0.5 rounded-full">
+                Searching within {radiusParam} km of {locationParam}
+              </span>
+            </div>
           </div>
           <div className="w-full md:max-w-xl">
             <SearchBar

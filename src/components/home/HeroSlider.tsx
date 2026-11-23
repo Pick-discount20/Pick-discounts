@@ -11,9 +11,9 @@ import {
   Sparkles,
   Home,
   Car,
+  ArrowRight,
   LucideIcon,
 } from 'lucide-react';
-import { SearchBar } from '@/components/discovery/SearchBar';
 import { getAssetPath } from '@/utils/assetPath';
 
 interface HeroSlide {
@@ -42,13 +42,13 @@ const HERO_SLIDES: HeroSlide[] = [
   },
   {
     id: 'healthcare',
-    category: 'Healthcare',
+    category: 'Healthcare & Clinics',
     icon: Stethoscope,
     image: getAssetPath('/images/hero/healthcare.jpg'),
     headlineRegular: 'Find Care ',
     headlineAccent: 'You Can Trust.',
     accentColor: '#36B4A5',
-    supportingText: 'Explore verified healthcare professionals and clinics in your neighbourhood.',
+    supportingText: 'Explore verified healthcare professionals, clinics and diagnostic centers.',
     queryParam: 'Healthcare & Clinics',
   },
   {
@@ -59,7 +59,7 @@ const HERO_SLIDES: HeroSlide[] = [
     headlineRegular: 'Make Time for a ',
     headlineAccent: 'Better You.',
     accentColor: '#F4A261',
-    supportingText: 'Discover top-rated beauty salons, wellness spas and personal care specialists.',
+    supportingText: 'Discover top-rated beauty salons, luxury day spas and personal care specialists.',
     queryParam: 'Beauty & Wellness',
   },
   {
@@ -70,7 +70,7 @@ const HERO_SLIDES: HeroSlide[] = [
     headlineRegular: 'Find the Right Experts ',
     headlineAccent: 'for Your Home.',
     accentColor: '#36B4A5',
-    supportingText: 'Explore verified professionals for repairs, modular interiors and home services.',
+    supportingText: 'Explore verified professionals for repairs, modular interiors and renovations.',
     queryParam: 'Home Services',
   },
   {
@@ -81,7 +81,7 @@ const HERO_SLIDES: HeroSlide[] = [
     headlineRegular: 'Keep Moving ',
     headlineAccent: 'with Confidence.',
     accentColor: '#F4A261',
-    supportingText: 'Find reliable mechanics, detailing studios and automotive care specialists.',
+    supportingText: 'Find reliable mechanics, ceramic detailing studios and automotive specialists.',
     queryParam: 'Automotive Care',
   },
 ];
@@ -134,7 +134,7 @@ export const HeroSlider: React.FC = () => {
     <section
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative w-full min-h-[660px] sm:min-h-[700px] lg:min-h-[760px] flex flex-col justify-between overflow-hidden isolate text-white select-none"
+      className="relative w-full min-h-[620px] sm:min-h-[660px] lg:min-h-[700px] flex flex-col justify-between overflow-hidden isolate text-white select-none"
       aria-roledescription="carousel"
       aria-label="Local Business Category Highlights"
     >
@@ -167,26 +167,24 @@ export const HeroSlider: React.FC = () => {
           );
         })}
 
-        {/* Yelp-style Asymmetric Gradient Overlay:
-            Rich dark navy vignette on the left where text and search form sit,
-            leaving the center-right of the photograph clearly visible */}
+        {/* Yelp-style Asymmetric Gradient Overlay */}
         <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#14213D]/95 via-[#14213D]/75 via-45% to-transparent pointer-events-none" />
         <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#14213D]/85 via-transparent to-[#14213D]/40 pointer-events-none" />
       </div>
 
       {/* =========================================================================
-          HERO MAIN CONTENT (Clean, Open Yelp Composition - Prominent Search)
+          HERO MAIN CONTENT (Vertically Rebalanced with Search Moved to Navbar)
           ========================================================================= */}
-      <div className="relative z-20 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-32 lg:pt-36 pb-12 flex-1 flex flex-col justify-center">
-        <div className="max-w-2xl text-left space-y-4">
+      <div className="relative z-20 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-32 sm:pt-36 lg:pt-40 pb-12 flex-1 flex flex-col justify-center">
+        <div className="max-w-2xl text-left space-y-5">
           
           {/* Synchronized Dynamic Header Content with smooth 500ms transition */}
           <div
             key={activeSlide.id}
-            className="animate-in fade-in duration-500 ease-out space-y-3.5 motion-reduce:animate-none"
+            className="animate-in fade-in duration-500 ease-out space-y-4 motion-reduce:animate-none"
           >
             {/* Left-Aligned Category Label Badge */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/20 text-white backdrop-blur-md text-xs font-bold uppercase tracking-wider border border-white/25 shadow-xs">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/20 text-white backdrop-blur-md text-xs font-bold uppercase tracking-wider border border-white/25 shadow-xs">
               <activeSlide.icon className="w-3.5 h-3.5 text-[#F4A261]" />
               <span>Featured: {activeSlide.category}</span>
             </div>
@@ -206,18 +204,33 @@ export const HeroSlider: React.FC = () => {
             <p className="text-sm sm:text-base lg:text-lg text-slate-100 font-normal leading-relaxed max-w-xl drop-shadow-xs">
               {activeSlide.supportingText}
             </p>
+
+            {/* Primary Category Discovery Action Button */}
+            <div className="pt-2 flex items-center gap-3">
+              <Link
+                href={`/search?category=${encodeURIComponent(activeSlide.queryParam)}`}
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-bold text-xs sm:text-sm bg-[#2A9D8F] text-white hover:bg-[#21766C] transition-all shadow-md hover:shadow-lg focus:ring-2 focus:ring-[#2A9D8F]/50"
+              >
+                <span>Browse {activeSlide.category}</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+
+              <Link
+                href="/search"
+                className="inline-flex items-center gap-2 px-4 py-3 rounded-xl font-semibold text-xs sm:text-sm bg-white/10 hover:bg-white/20 text-white border border-white/25 backdrop-blur-xs transition-colors"
+              >
+                <span>View All Directory</span>
+              </Link>
+            </div>
           </div>
 
-          {/* Prominent White Search Bar Component (Preserves focus during slide changes) */}
-          <div className="pt-2 max-w-2xl w-full cursor-default select-text">
-            <SearchBar initialLocation="All Bangalore" />
-
-            {/* Popular search suggestions */}
-            <div className="mt-3.5 flex items-center gap-2 flex-wrap text-xs text-slate-200">
+          {/* Popular Search Suggestions (Curated tags) */}
+          <div className="pt-2">
+            <div className="flex items-center gap-2 flex-wrap text-xs text-slate-200">
               <span className="font-semibold text-white">Popular:</span>
               {[
                 { label: 'Specialty Coffee', cat: 'Restaurants & Cafes' },
-                { label: 'Dental Implants', cat: 'Healthcare' },
+                { label: 'Dental Implants', cat: 'Healthcare & Clinics' },
                 { label: 'Ceramic Detailing', cat: 'Automotive Care' },
                 { label: 'Organic Hair Spa', cat: 'Beauty & Wellness' },
                 { label: 'Modular Interiors', cat: 'Home Services' },
@@ -225,7 +238,7 @@ export const HeroSlider: React.FC = () => {
                 <Link
                   key={tag.label}
                   href={`/search?q=${encodeURIComponent(tag.label)}&category=${encodeURIComponent(tag.cat)}`}
-                  className="bg-black/35 hover:bg-white/20 text-slate-100 hover:text-white px-2.5 py-1 rounded-full border border-white/20 backdrop-blur-xs transition-colors"
+                  className="bg-black/35 hover:bg-white/20 text-slate-100 hover:text-white px-3 py-1 rounded-full border border-white/20 backdrop-blur-xs transition-colors"
                 >
                   {tag.label}
                 </Link>
@@ -267,7 +280,6 @@ export const HeroSlider: React.FC = () => {
 
       {/* =========================================================================
           BOTTOM SLIDE CONTROLS (Compact Category Selector Pills & Arrow Controls)
-          Direct click navigation available for all viewports (Mobile & Desktop)
           ========================================================================= */}
       <div className="relative z-20 border-t border-white/15 bg-black/40 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
