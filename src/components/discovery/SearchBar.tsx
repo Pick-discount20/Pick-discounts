@@ -16,24 +16,24 @@ import {
 export const DEFAULT_SEARCH_RADIUS_KM = 5;
 
 export const POPULAR_LOCATIONS = [
-  { city: 'Ahmedabad', state: 'Gujarat', label: 'Ahmedabad, Gujarat', primary: true },
-  { city: 'Ahmedabad', state: 'Gujarat', label: 'SG Highway, Ahmedabad' },
-  { city: 'Ahmedabad', state: 'Gujarat', label: 'Prahlad Nagar, Ahmedabad' },
-  { city: 'Ahmedabad', state: 'Gujarat', label: 'Navrangpura, Ahmedabad' },
-  { city: 'Ahmedabad', state: 'Gujarat', label: 'Bodakdev, Ahmedabad' },
-  { city: 'Bangalore', state: 'Karnataka', label: 'Indiranagar, Bangalore' },
-  { city: 'Bangalore', state: 'Karnataka', label: 'Koramangala, Bangalore' },
-  { city: 'Bangalore', state: 'Karnataka', label: 'HSR Layout, Bangalore' },
-  { city: 'Bangalore', state: 'Karnataka', label: 'Whitefield, Bangalore' },
+  { city: 'Ahmedabad', label: 'Satellite, Ahmedabad', primary: true },
+  { city: 'Ahmedabad', label: 'Vastrapur, Ahmedabad' },
+  { city: 'Ahmedabad', label: 'SG Highway, Ahmedabad' },
+  { city: 'Ahmedabad', label: 'Prahlad Nagar, Ahmedabad' },
+  { city: 'Ahmedabad', label: 'Bodakdev, Ahmedabad' },
+  { city: 'Bangalore', label: 'Indiranagar, Bangalore' },
+  { city: 'Bangalore', label: 'Koramangala, Bangalore' },
+  { city: 'Bangalore', label: 'HSR Layout, Bangalore' },
+  { city: 'Bangalore', label: 'Whitefield, Bangalore' },
 ];
 
 export const POPULAR_SEARCH_SUGGESTIONS = [
-  { label: 'Restaurants & Cafes', type: 'Category', icon: '🍽️' },
-  { label: 'Dentists & Dental Clinics', type: 'Healthcare', icon: '🦷' },
-  { label: 'Beauty Salons & Day Spas', type: 'Beauty', icon: '✨' },
-  { label: 'Car Repair & Detailing', type: 'Automotive', icon: '🚗' },
-  { label: 'Home Services & Electricians', type: 'Home', icon: '🏠' },
-  { label: 'Interior Designers & Decor', type: 'Home', icon: '🛋️' },
+  { label: 'Restaurants', category: 'Restaurants & Cafes', icon: '🍽️' },
+  { label: 'Dentists', category: 'Healthcare & Clinics', icon: '🦷' },
+  { label: 'Car services', category: 'Automotive Care', icon: '🚗' },
+  { label: 'Beauty salons', category: 'Beauty & Wellness', icon: '✨' },
+  { label: 'Home cleaning', category: 'Home Services', icon: '🧹' },
+  { label: 'Healthcare', category: 'Healthcare & Clinics', icon: '🏥' },
 ];
 
 interface SearchBarProps {
@@ -45,7 +45,7 @@ interface SearchBarProps {
 
 export const SearchBar: React.FC<SearchBarProps> = ({
   initialKeyword = '',
-  initialLocation = 'Ahmedabad, Gujarat',
+  initialLocation = 'Satellite, Ahmedabad',
   compact = false,
   className = '',
 }) => {
@@ -55,7 +55,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   const [locationDropdownOpen, setLocationDropdownOpen] = useState(false);
   const [keywordSuggestionsOpen, setKeywordSuggestionsOpen] = useState(false);
 
-  // Geolocation handling state
+  // Geolocation state
   const [geoStatus, setGeoStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [geoMessage, setGeoMessage] = useState<string | null>(null);
 
@@ -74,7 +74,6 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Filter keyword suggestions based on user input
   const filteredSuggestions = POPULAR_SEARCH_SUGGESTIONS.filter((item) =>
     item.label.toLowerCase().includes(keyword.toLowerCase())
   );
@@ -86,7 +85,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 
     if (typeof window === 'undefined' || !navigator.geolocation) {
       setGeoStatus('error');
-      setGeoMessage('Geolocation is not supported by your browser.');
+      setGeoMessage("We couldn't determine your location. Please enter your area manually.");
       return;
     }
 
@@ -95,31 +94,30 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        // High accuracy coordinates retrieved
         const lat = position.coords.latitude.toFixed(3);
         const lng = position.coords.longitude.toFixed(3);
         const label = `Current Location (${lat}, ${lng})`;
         setLocation(label);
         setGeoStatus('success');
-        setGeoMessage(`Location acquired (${DEFAULT_SEARCH_RADIUS_KM} km radius applied)`);
+        setGeoMessage(`Location acquired (Searching within ${DEFAULT_SEARCH_RADIUS_KM} km)`);
         setTimeout(() => {
           setLocationDropdownOpen(false);
-        }, 600);
+        }, 500);
       },
       (error) => {
         setGeoStatus('error');
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            setGeoMessage('Location permission denied. Please select your locality manually.');
+            setGeoMessage('Location permission was denied. Please enter your area manually.');
             break;
           case error.POSITION_UNAVAILABLE:
-            setGeoMessage('Location information is currently unavailable.');
+            setGeoMessage("We couldn't determine your location. Please enter your area manually.");
             break;
           case error.TIMEOUT:
-            setGeoMessage('Location request timed out. Please try again.');
+            setGeoMessage('Location request timed out. Please enter your area manually.');
             break;
           default:
-            setGeoMessage('Could not retrieve current location.');
+            setGeoMessage("We couldn't determine your location. Please enter your area manually.");
             break;
         }
       },
@@ -131,7 +129,6 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     );
   };
 
-  // Search submission with keyword, location and default 5 km radius
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setKeywordSuggestionsOpen(false);
@@ -161,14 +158,14 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       onSubmit={handleSubmit}
       className={`relative w-full ${
         compact
-          ? 'bg-white p-1 rounded-xl border border-slate-200/90 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center'
-          : 'bg-white p-1 sm:p-1.5 rounded-2xl border border-slate-200/90 shadow-lg hover:shadow-xl transition-shadow flex flex-col md:flex-row items-stretch md:items-center'
+          ? 'bg-white p-1 rounded-xl border border-slate-200/90 shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center'
+          : 'bg-white p-1 sm:p-1.5 rounded-2xl border border-slate-200/90 shadow-md hover:shadow-lg transition-shadow flex flex-col md:flex-row items-stretch md:items-center'
       } ${className}`}
       role="search"
       aria-label="Local business and location search"
     >
       {/* =======================================================================
-          INPUT 1: WHAT ARE YOU LOOKING FOR? (Yelp Keyword Search)
+          FIRST INPUT — WHAT (Yelp Keyword Search)
           ======================================================================= */}
       <div className="relative flex-1 flex items-center min-w-0 px-3 py-1.5 md:py-2">
         <label htmlFor="search-keyword-input" className="sr-only">
@@ -192,7 +189,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           />
         </div>
 
-        {/* Keyword Suggestions Dropdown */}
+        {/* Autocomplete Suggestions Dropdown */}
         {keywordSuggestionsOpen && (
           <div
             className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-slate-100 py-2 z-50 animate-in fade-in duration-150"
@@ -200,7 +197,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           >
             <div className="px-3.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1">
               <Sparkles className="w-3 h-3 text-[#2A9D8F]" />
-              <span>Popular Searches</span>
+              <span>Suggested Searches</span>
             </div>
             {filteredSuggestions.map((item, idx) => (
               <button
@@ -214,7 +211,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                   <span className="font-medium">{item.label}</span>
                 </div>
                 <span className="text-[10px] bg-slate-100 text-slate-500 font-semibold px-2 py-0.5 rounded-full">
-                  {item.type}
+                  {item.category}
                 </span>
               </button>
             ))}
@@ -226,11 +223,11 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       <div className="hidden md:block w-px h-7 bg-slate-200 shrink-0 self-center" aria-hidden="true" />
 
       {/* =======================================================================
-          INPUT 2: WHERE? (Yelp Location Search + 5 km Radius Indicator)
+          SECOND INPUT — WHERE (Location Search: Area, Locality or Pincode)
           ======================================================================= */}
       <div className="relative flex-1 flex items-center min-w-0 px-3 py-1.5 md:py-2 border-t md:border-t-0 border-slate-100">
         <label htmlFor="search-location-input" className="sr-only">
-          Location: Where?
+          Location: Enter area, locality or pincode
         </label>
         <div className="flex items-center gap-2 w-full">
           <MapPin className="w-4 h-4 text-[#F4A261] shrink-0" aria-hidden="true" />
@@ -248,8 +245,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                 setLocationDropdownOpen(true);
               }}
               onFocus={() => setLocationDropdownOpen(true)}
-              placeholder="City, locality or address"
-              aria-label="Location (City, locality or address)"
+              placeholder="Enter area, locality or pincode"
+              aria-label="Enter area, locality or pincode"
               autoComplete="off"
               className="w-full bg-transparent text-[#14213D] placeholder-slate-400 text-xs sm:text-sm font-semibold focus:outline-none"
             />
@@ -258,7 +255,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           {/* 5 km Radius Badge */}
           <span
             className="shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-[#2A9D8F]/10 text-[#2A9D8F] whitespace-nowrap cursor-default"
-            title="Business discovery default radius: 5 km"
+            title="Discovery search radius: 5 km"
           >
             5 km
           </span>
@@ -273,7 +270,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           </button>
         </div>
 
-        {/* Location Dropdown Menu with Geolocation & Popular Localities */}
+        {/* Location Dropdown Menu with Geolocation & Areas */}
         {locationDropdownOpen && (
           <div
             className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-slate-100 p-2 z-50 animate-in fade-in duration-150 min-w-[280px]"
@@ -294,7 +291,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                 <div className="flex-1 min-w-0">
                   <div className="leading-tight">Use my current location</div>
                   <div className="text-[10px] font-medium text-slate-500">
-                    Find verified businesses within 5 km
+                    Find businesses within 5 km of your position
                   </div>
                 </div>
               </button>
@@ -317,7 +314,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
             {/* Popular Localities List */}
             <div className="pt-2">
               <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                Suggested Locations
+                Suggested Areas & Localities
               </div>
               <div className="max-h-52 overflow-y-auto no-scrollbar space-y-0.5">
                 {POPULAR_LOCATIONS.map((loc) => {
@@ -347,8 +344,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 
             {/* Radius reminder */}
             <div className="mt-2 pt-2 border-t border-slate-100 px-3 py-1 text-[10px] font-semibold text-slate-400 flex items-center justify-between">
-              <span>Default Radius:</span>
-              <span className="text-[#2A9D8F] font-bold">Searching within 5 km</span>
+              <span>Search Radius:</span>
+              <span className="text-[#2A9D8F] font-bold">Within 5 km</span>
             </div>
           </div>
         )}

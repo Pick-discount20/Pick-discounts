@@ -302,9 +302,9 @@ function SearchResultsContent() {
                       <SearchIcon className="w-6 h-6" />
                     </div>
                     <div>
-                      <h3 className="text-base font-bold text-[#14213D]">No businesses matched your filters</h3>
+                      <h3 className="text-base font-bold text-[#14213D]">No businesses found within 5 km of this location.</h3>
                       <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
-                        Try expanding your distance radius, removing minimum rating requirements, or resetting your category selections.
+                        We couldn&apos;t determine your location or found no matches nearby. Please enter your area manually or reset your category filters.
                       </p>
                     </div>
                     <button
@@ -434,7 +434,7 @@ function SearchResultsContent() {
 
 export default function SearchPage() {
   return (
-    <Suspense fallback={<div className="p-8 text-center text-sm text-slate-500">Loading search results...</div>}>
+    <Suspense fallback={<div className="p-8 text-center text-sm font-semibold text-slate-500">Finding businesses near you...</div>}>
       <SearchResultsContent />
     </Suspense>
   );

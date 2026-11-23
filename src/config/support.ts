@@ -1,11 +1,11 @@
 /**
  * Peak Discount Customer Support Configuration
  * 
- * Configurable WhatsApp customer support channel.
+ * Configurable WhatsApp customer support channel for official WhatsApp Business account.
  * 
  * INSTRUCTIONS FOR CLIENT:
  * To activate live WhatsApp chat, set `phoneNumber` to your official business 
- * WhatsApp number in international format with country code and without '+' or spaces 
+ * WhatsApp account number in international format with country code and without '+' or spaces 
  * (e.g., '919876543210' for India).
  * 
  * When empty, the application will display the transparent onboarding dialog 
@@ -14,7 +14,7 @@
 export const WHATSAPP_SUPPORT_CONFIG = {
   // Official business WhatsApp number provided by client (leave empty until assigned)
   phoneNumber: '', // e.g. '919876543210'
-  defaultMessage: 'Hello Peak Discount Support, I would like to inquire about local business discovery and verification.',
+  defaultMessage: 'Hello Peak Discount Support! I need assistance with your platform.',
   channelLabel: 'WhatsApp Support',
   supportEmail: 'support@peakdiscount.com',
   operatingHours: 'Monday - Saturday: 9:00 AM - 8:00 PM IST',
