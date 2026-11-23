@@ -14,6 +14,7 @@ import {
   LucideIcon,
 } from 'lucide-react';
 import { SearchBar } from '@/components/discovery/SearchBar';
+import { getAssetPath } from '@/utils/assetPath';
 
 interface HeroSlide {
   id: string;
@@ -32,7 +33,7 @@ const HERO_SLIDES: HeroSlide[] = [
     id: 'dining',
     category: 'Restaurants & Cafes',
     icon: UtensilsCrossed,
-    image: '/images/hero/dining.jpg',
+    image: getAssetPath('/images/hero/dining.jpg'),
     headlineRegular: 'Discover Places ',
     headlineAccent: 'Worth Experiencing.',
     accentColor: '#F4A261',
@@ -43,7 +44,7 @@ const HERO_SLIDES: HeroSlide[] = [
     id: 'healthcare',
     category: 'Healthcare',
     icon: Stethoscope,
-    image: '/images/hero/healthcare.jpg',
+    image: getAssetPath('/images/hero/healthcare.jpg'),
     headlineRegular: 'Find Care ',
     headlineAccent: 'You Can Trust.',
     accentColor: '#36B4A5',
@@ -54,7 +55,7 @@ const HERO_SLIDES: HeroSlide[] = [
     id: 'beauty',
     category: 'Beauty & Wellness',
     icon: Sparkles,
-    image: '/images/hero/beauty.jpg',
+    image: getAssetPath('/images/hero/beauty.jpg'),
     headlineRegular: 'Make Time for a ',
     headlineAccent: 'Better You.',
     accentColor: '#F4A261',
@@ -65,7 +66,7 @@ const HERO_SLIDES: HeroSlide[] = [
     id: 'home',
     category: 'Home Services',
     icon: Home,
-    image: '/images/hero/home.jpg',
+    image: getAssetPath('/images/hero/home.jpg'),
     headlineRegular: 'Find the Right Experts ',
     headlineAccent: 'for Your Home.',
     accentColor: '#36B4A5',
@@ -76,7 +77,7 @@ const HERO_SLIDES: HeroSlide[] = [
     id: 'automotive',
     category: 'Automotive Care',
     icon: Car,
-    image: '/images/hero/automotive.jpg',
+    image: getAssetPath('/images/hero/automotive.jpg'),
     headlineRegular: 'Keep Moving ',
     headlineAccent: 'with Confidence.',
     accentColor: '#F4A261',

@@ -19,6 +19,7 @@ import { BusinessCard } from '@/components/discovery/BusinessCard';
 import { FilterSidebar, FilterState } from '@/components/discovery/FilterSidebar';
 import { MapPlaceholder } from '@/components/discovery/MapPlaceholder';
 import { DEMO_BUSINESSES } from '@/data/mockData';
+import { getAssetPath } from '@/utils/assetPath';
 
 function SearchResultsContent() {
   const searchParams = useSearchParams();
@@ -131,7 +132,7 @@ function SearchResultsContent() {
       <div className="relative bg-[#14213D] border-b border-slate-200/80 py-6 sm:py-8 px-4 sm:px-6 lg:px-8 overflow-hidden text-white">
         <div className="absolute inset-0 pointer-events-none opacity-20">
           <Image
-            src="/images/banners/search-banner.jpg"
+            src={getAssetPath('/images/banners/search-banner.jpg')}
             alt="Search background texture"
             fill
             className="object-cover object-center"

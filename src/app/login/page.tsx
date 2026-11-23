@@ -8,6 +8,7 @@ import { Eye, EyeOff, Lock, Mail, ArrowRight, ShieldCheck, AlertCircle, Sparkles
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { DemoDisclaimer } from '@/components/layout/DemoDisclaimer';
+import { getAssetPath } from '@/utils/assetPath';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -44,7 +45,7 @@ export default function LoginPage() {
           {/* Left Photographic Showcase Column (Yelp style) */}
           <div className="hidden md:relative md:flex flex-col justify-between p-8 text-white overflow-hidden bg-[#14213D]">
             <Image
-              src="/images/auth/auth-showcase.jpg"
+              src={getAssetPath('/images/auth/auth-showcase.jpg')}
               alt="Local business showcase"
               fill
               className="object-cover object-center"

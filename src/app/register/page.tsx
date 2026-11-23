@@ -8,6 +8,7 @@ import { Eye, EyeOff, Lock, Mail, User, ShieldCheck, AlertCircle, CheckCircle2, 
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { DemoDisclaimer } from '@/components/layout/DemoDisclaimer';
+import { getAssetPath } from '@/utils/assetPath';
 import { Modal } from '@/components/common/Modal';
 
 export default function RegisterPage() {
@@ -54,7 +55,7 @@ export default function RegisterPage() {
           {/* Left Photographic Showcase Column (Yelp style) */}
           <div className="hidden md:relative md:flex flex-col justify-between p-8 text-white overflow-hidden bg-[#14213D]">
             <Image
-              src="/images/auth/register-showcase.jpg"
+              src={getAssetPath('/images/auth/register-showcase.jpg')}
               alt="Artisan cafe showcase"
               fill
               className="object-cover object-center"
