@@ -19,11 +19,11 @@ import { getAssetPath } from '@/utils/assetPath';
 interface HeroSlide {
   id: string;
   category: string;
+  shortLabel: string;
   icon: LucideIcon;
   image: string;
   headlineRegular: string;
   headlineAccent: string;
-  accentColor: string;
   supportingText: string;
   queryParam: string;
 }
@@ -32,61 +32,61 @@ const HERO_SLIDES: HeroSlide[] = [
   {
     id: 'dining',
     category: 'Restaurants & Cafes',
+    shortLabel: 'Dining',
     icon: UtensilsCrossed,
     image: getAssetPath('/images/hero/dining.jpg'),
     headlineRegular: 'Discover Places ',
     headlineAccent: 'Worth Experiencing.',
-    accentColor: '#F4A261',
-    supportingText: 'Find exceptional restaurants, cafes and local dining experiences around you.',
+    supportingText: 'Find exceptional restaurants, curated cafes and authentic culinary destinations verified for quality.',
     queryParam: 'Restaurants & Cafes',
   },
   {
     id: 'healthcare',
     category: 'Healthcare & Clinics',
+    shortLabel: 'Healthcare',
     icon: Stethoscope,
     image: getAssetPath('/images/hero/healthcare.jpg'),
     headlineRegular: 'Find Care ',
     headlineAccent: 'You Can Trust.',
-    accentColor: '#36B4A5',
-    supportingText: 'Explore verified healthcare professionals, clinics and diagnostic centers.',
+    supportingText: 'Connect with certified doctors, diagnostic centres and licensed medical specialists with verified credentials.',
     queryParam: 'Healthcare & Clinics',
   },
   {
     id: 'beauty',
     category: 'Beauty & Wellness',
+    shortLabel: 'Wellness',
     icon: Sparkles,
     image: getAssetPath('/images/hero/beauty.jpg'),
     headlineRegular: 'Make Time for a ',
     headlineAccent: 'Better You.',
-    accentColor: '#F4A261',
-    supportingText: 'Discover top-rated beauty salons, luxury day spas and personal care specialists.',
+    supportingText: 'Explore top-rated luxury spas, modern salons and wellness therapists rated for hygiene and service.',
     queryParam: 'Beauty & Wellness',
   },
   {
     id: 'home',
     category: 'Home Services',
+    shortLabel: 'Home Care',
     icon: Home,
     image: getAssetPath('/images/hero/home.jpg'),
     headlineRegular: 'Find the Right Experts ',
     headlineAccent: 'for Your Home.',
-    accentColor: '#36B4A5',
-    supportingText: 'Explore verified professionals for repairs, modular interiors and renovations.',
+    supportingText: 'Book background-checked electricians, licensed contractors and verified interior specialists.',
     queryParam: 'Home Services',
   },
   {
     id: 'automotive',
     category: 'Automotive Care',
+    shortLabel: 'Automotive',
     icon: Car,
     image: getAssetPath('/images/hero/automotive.jpg'),
     headlineRegular: 'Keep Moving ',
     headlineAccent: 'with Confidence.',
-    accentColor: '#F4A261',
-    supportingText: 'Find reliable mechanics, ceramic detailing studios and automotive specialists.',
+    supportingText: 'Discover trusted mechanics, precision diagnostic garages and verified ceramic detailing studios.',
     queryParam: 'Automotive Care',
   },
 ];
 
-const AUTOPLAY_INTERVAL = 3500; // 3.5 seconds as requested
+const AUTOPLAY_INTERVAL = 5000; // 5 seconds per slide
 
 export const HeroSlider: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -104,12 +104,12 @@ export const HeroSlider: React.FC = () => {
     setCurrentSlide((prev) => (prev - 1 + slideCount) % slideCount);
   }, [slideCount]);
 
-  // Directly select a slide and reset countdown
+  // Jump to specific slide
   const goToSlide = useCallback((index: number) => {
     setCurrentSlide(index);
   }, []);
 
-  // Autoplay management: runs every 3.5s, pauses on hover, resets on slide change
+  // Autoplay management: transitions every 5s, pauses on hover, respects reduced motion
   useEffect(() => {
     if (isHovered) {
       if (timerRef.current) clearInterval(timerRef.current);
@@ -134,13 +134,12 @@ export const HeroSlider: React.FC = () => {
     <section
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative w-full min-h-[620px] sm:min-h-[660px] lg:min-h-[700px] flex flex-col justify-between overflow-hidden isolate text-white select-none"
+      className="relative w-full min-h-[580px] sm:min-h-[620px] lg:min-h-[660px] flex items-center overflow-hidden isolate text-white select-none"
       aria-roledescription="carousel"
-      aria-label="Local Business Category Highlights"
+      aria-label="Featured Local Business Highlights"
     >
       {/* =========================================================================
           FULL-WIDTH EDGE-TO-EDGE PHOTOGRAPHIC BACKGROUND (Yelp Immersive Style)
-          Smooth 800ms crossfade with subtle scale effect and next-image preloading
           ========================================================================= */}
       <div className="absolute inset-0 pointer-events-none z-0 transform-gpu">
         {HERO_SLIDES.map((slide, index) => {
@@ -159,7 +158,7 @@ export const HeroSlider: React.FC = () => {
                 fill
                 priority={index === 0 || isNext}
                 sizes="100vw"
-                className={`object-cover object-center transition-transform duration-[6000ms] ease-out will-change-transform motion-reduce:transition-none ${
+                className={`object-cover object-center transition-transform duration-[7000ms] ease-out will-change-transform motion-reduce:transition-none ${
                   isActive ? 'scale-105' : 'scale-100'
                 }`}
               />
@@ -167,87 +166,59 @@ export const HeroSlider: React.FC = () => {
           );
         })}
 
-        {/* Yelp-style Asymmetric Gradient Overlay */}
-        <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#14213D]/95 via-[#14213D]/75 via-45% to-transparent pointer-events-none" />
-        <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#14213D]/85 via-transparent to-[#14213D]/40 pointer-events-none" />
+        {/* Controlled Asymmetric Dark Gradient: Left dark for text contrast, right open for photographic clarity */}
+        <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#17243B]/92 via-[#17243B]/65 via-50% to-[#17243B]/25 pointer-events-none" />
+        <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#17243B]/75 via-transparent to-[#17243B]/40 pointer-events-none" />
       </div>
 
       {/* =========================================================================
-          HERO MAIN CONTENT (Vertically Rebalanced with Search Moved to Navbar)
+          HERO MAIN CONTENT CONTAINER (Yelp Balanced International Layout)
           ========================================================================= */}
-      <div className="relative z-20 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-32 sm:pt-36 lg:pt-40 pb-12 flex-1 flex flex-col justify-center">
-        <div className="max-w-2xl text-left space-y-5">
+      <div className="relative z-20 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-32 sm:pt-36 lg:pt-32 pb-16 flex items-center justify-between gap-8">
+        
+        {/* Left Column: Heading, Description, CTA, and Slide Indicators */}
+        <div className="max-w-2xl text-left space-y-6">
           
-          {/* Synchronized Dynamic Header Content with smooth 500ms transition */}
+          {/* Synchronized Dynamic Header Content with smooth 500ms fade */}
           <div
             key={activeSlide.id}
             className="animate-in fade-in duration-500 ease-out space-y-4 motion-reduce:animate-none"
           >
-            {/* Left-Aligned Category Label Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/20 text-white backdrop-blur-md text-xs font-bold uppercase tracking-wider border border-white/25 shadow-xs">
-              <activeSlide.icon className="w-3.5 h-3.5 text-[#F4A261]" />
+            {/* Small Featured Category Pill */}
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-white backdrop-blur-md text-xs font-semibold uppercase tracking-wider border border-white/20 shadow-xs">
+              <activeSlide.icon className="w-3.5 h-3.5 text-[#E66B45]" />
               <span>Featured: {activeSlide.category}</span>
             </div>
 
-            {/* Large Confident Left-Aligned Headline with Display Font Accent */}
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.12] drop-shadow-md">
+            {/* Campaign Heading: Sans-serif bold with editorial serif italic accent word */}
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.14] drop-shadow-sm">
               <span>{activeSlide.headlineRegular}</span>
-              <span
-                className="font-display italic ml-1 sm:ml-2 block sm:inline transition-colors duration-500"
-                style={{ color: activeSlide.accentColor }}
-              >
+              <span className="font-display italic text-[#E66B45] ml-1 sm:ml-2 inline transition-colors duration-500">
                 {activeSlide.headlineAccent}
               </span>
             </h1>
 
-            {/* Supporting Description */}
-            <p className="text-sm sm:text-base lg:text-lg text-slate-100 font-normal leading-relaxed max-w-xl drop-shadow-xs">
+            {/* Category Supporting Description */}
+            <p className="text-base sm:text-lg text-slate-100/90 font-normal leading-relaxed max-w-xl">
               {activeSlide.supportingText}
             </p>
 
-            {/* Primary Category Discovery Action Button */}
-            <div className="pt-2 flex items-center gap-3">
+            {/* One Prominent CTA Button (No competing second button) */}
+            <div className="pt-2">
               <Link
                 href={`/search?category=${encodeURIComponent(activeSlide.queryParam)}`}
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-bold text-xs sm:text-sm bg-[#2A9D8F] text-white hover:bg-[#21766C] transition-all shadow-md hover:shadow-lg focus:ring-2 focus:ring-[#2A9D8F]/50"
+                className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl font-bold text-sm bg-[#E66B45] hover:bg-[#d85d37] text-white transition-all shadow-md hover:shadow-xl focus:ring-2 focus:ring-[#E66B45]/50 group"
               >
                 <span>Browse {activeSlide.category}</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-
-              <Link
-                href="/search"
-                className="inline-flex items-center gap-2 px-4 py-3 rounded-xl font-semibold text-xs sm:text-sm bg-white/10 hover:bg-white/20 text-white border border-white/25 backdrop-blur-xs transition-colors"
-              >
-                <span>View All Directory</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </Link>
             </div>
           </div>
 
-          {/* Popular Search Suggestions (Curated tags) */}
-          <div className="pt-2">
-            <div className="flex items-center gap-2 flex-wrap text-xs text-slate-200">
-              <span className="font-semibold text-white">Popular:</span>
-              {[
-                { label: 'Specialty Coffee', cat: 'Restaurants & Cafes' },
-                { label: 'Dental Implants', cat: 'Healthcare & Clinics' },
-                { label: 'Ceramic Detailing', cat: 'Automotive Care' },
-                { label: 'Organic Hair Spa', cat: 'Beauty & Wellness' },
-                { label: 'Modular Interiors', cat: 'Home Services' },
-              ].map((tag) => (
-                <Link
-                  key={tag.label}
-                  href={`/search?q=${encodeURIComponent(tag.label)}&category=${encodeURIComponent(tag.cat)}`}
-                  className="bg-black/35 hover:bg-white/20 text-slate-100 hover:text-white px-3 py-1 rounded-full border border-white/20 backdrop-blur-xs transition-colors"
-                >
-                  {tag.label}
-                </Link>
-              ))}
-            </div>
-
-            {/* Compact Carousel Progress Bar Indicators */}
+          {/* Vertical/Horizontal Slide Progress Indicators: Clean, clickable, restrained */}
+          <div className="pt-4 flex items-center gap-4">
             <div
-              className="mt-4 flex items-center gap-2"
+              className="flex items-center gap-2"
               role="tablist"
               aria-label="Slide Indicator Progress"
             >
@@ -261,87 +232,44 @@ export const HeroSlider: React.FC = () => {
                     aria-selected={isActive}
                     aria-label={`Go to slide ${idx + 1}: ${slide.category}`}
                     onClick={() => goToSlide(idx)}
-                    className="group py-1 focus:outline-none cursor-pointer"
+                    className="group py-2 focus:outline-none cursor-pointer"
                   >
                     <span
                       className={`block rounded-full transition-all duration-300 ${
                         isActive
-                          ? 'w-8 h-1.5 bg-white shadow-xs'
-                          : 'w-3.5 h-1.5 bg-white/40 group-hover:bg-white/70 group-hover:w-5'
+                          ? 'w-8 h-1.5 bg-[#E66B45] shadow-xs'
+                          : 'w-3 h-1.5 bg-white/40 group-hover:bg-white/70 group-hover:w-5'
                       }`}
                     />
                   </button>
                 );
               })}
             </div>
-          </div>
-        </div>
-      </div>
 
-      {/* =========================================================================
-          BOTTOM SLIDE CONTROLS (Compact Category Selector Pills & Arrow Controls)
-          ========================================================================= */}
-      <div className="relative z-20 border-t border-white/15 bg-black/40 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-          <div className="flex items-center justify-between gap-4">
-            
-            {/* Left: Compact Category slide selector pills */}
-            <div
-              className="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5"
-              role="tablist"
-              aria-label="Category Slides"
-            >
-              {HERO_SLIDES.map((slide, idx) => {
-                const isActive = idx === currentSlide;
-                const Icon = slide.icon;
-                return (
-                  <button
-                    key={slide.id}
-                    type="button"
-                    role="tab"
-                    aria-selected={isActive}
-                    onClick={() => goToSlide(idx)}
-                    className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-300 cursor-pointer ${
-                      isActive
-                        ? 'bg-white text-[#14213D] shadow-md ring-2 ring-[#2A9D8F]'
-                        : 'text-slate-300 hover:text-white hover:bg-white/10'
-                    }`}
-                    aria-label={`Go to slide ${idx + 1}: ${slide.category}`}
-                  >
-                    <Icon className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-[#2A9D8F]' : 'text-slate-400'}`} />
-                    <span>{slide.category}</span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Right: Slide Counter & Manual Arrow Controls */}
-            <div className="flex items-center gap-2.5 shrink-0">
-              <span className="text-xs font-semibold text-slate-300">
-                0{currentSlide + 1} / 0{slideCount}
-              </span>
-
-              <div className="flex items-center gap-1">
-                <button
-                  type="button"
-                  onClick={prevSlide}
-                  aria-label="Previous slide"
-                  className="w-8 h-8 rounded-lg bg-white/10 hover:bg-[#2A9D8F] text-white flex items-center justify-center border border-white/20 transition-colors cursor-pointer"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-                <button
-                  type="button"
-                  onClick={nextSlide}
-                  aria-label="Next slide"
-                  className="w-8 h-8 rounded-lg bg-white/10 hover:bg-[#2A9D8F] text-white flex items-center justify-center border border-white/20 transition-colors cursor-pointer"
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
+            {/* Subtle Slide Prev/Next Arrow Controls */}
+            <div className="flex items-center gap-1.5 pl-2 border-l border-white/20">
+              <button
+                type="button"
+                onClick={prevSlide}
+                aria-label="Previous slide"
+                className="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer"
+              >
+                <ChevronLeft className="w-3.5 h-3.5" />
+              </button>
+              <button
+                type="button"
+                onClick={nextSlide}
+                aria-label="Next slide"
+                className="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer"
+              >
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
             </div>
           </div>
         </div>
+
+        {/* Right Area: Intentionally spacious and uncluttered so the photograph shines through */}
+        <div className="hidden lg:block flex-1 max-w-sm pointer-events-none" />
       </div>
     </section>
   );

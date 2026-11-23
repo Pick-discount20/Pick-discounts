@@ -24,8 +24,8 @@ export const BusinessCard: React.FC<BusinessCardProps> = ({
     <article
       className={`group bg-white rounded-2xl border transition-all duration-200 overflow-hidden ${
         featuredHighlight
-          ? 'border-[#2A9D8F]/40 shadow-md hover:shadow-xl ring-1 ring-[#2A9D8F]/20'
-          : 'border-slate-200/80 shadow-xs hover:shadow-lg hover:border-slate-300'
+          ? 'border-[#249C91]/40 shadow-md hover:shadow-xl ring-1 ring-[#249C91]/20'
+          : 'border-[#E2E8F0] shadow-xs hover:shadow-lg hover:border-slate-300'
       } ${isList ? 'flex flex-col sm:flex-row' : 'flex flex-col'}`}
     >
       {/* Thumbnail Area */}
@@ -46,15 +46,15 @@ export const BusinessCard: React.FC<BusinessCardProps> = ({
 
         {/* Top Badges overlay */}
         <div className="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none">
-          <span className="bg-white/95 backdrop-blur-xs text-[11px] font-semibold text-[#14213D] px-2.5 py-1 rounded-full shadow-xs">
+          <span className="bg-white/95 backdrop-blur-xs text-[11px] font-semibold text-[#17243B] px-2.5 py-1 rounded-full shadow-xs">
             {business.subcategory}
           </span>
           <VerificationBadge status={business.verificationStatus} size="sm" showLabel={false} />
         </div>
 
         {/* Bottom Distance pill */}
-        <div className="absolute bottom-3 left-3 bg-[#14213D]/80 backdrop-blur-xs text-white text-[11px] px-2 py-0.5 rounded-md flex items-center gap-1 font-medium">
-          <MapPin className="w-3 h-3 text-[#F4A261]" />
+        <div className="absolute bottom-3 left-3 bg-[#17243B]/85 backdrop-blur-xs text-white text-[11px] px-2 py-0.5 rounded-md flex items-center gap-1 font-medium">
+          <MapPin className="w-3 h-3 text-[#E66B45]" />
           <span>{business.distanceKm} km away</span>
         </div>
       </div>
@@ -65,7 +65,7 @@ export const BusinessCard: React.FC<BusinessCardProps> = ({
           {/* Header Row: Category, Verification & Price */}
           <div className="flex items-center justify-between gap-2 mb-1.5 flex-wrap">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-semibold text-[#2A9D8F] uppercase tracking-wider">
+              <span className="text-xs font-semibold text-[#249C91] uppercase tracking-wider">
                 {business.category}
               </span>
               <span className="text-slate-300">•</span>
@@ -76,7 +76,7 @@ export const BusinessCard: React.FC<BusinessCardProps> = ({
           </div>
 
           {/* Business Name Link */}
-          <h3 className="text-lg font-bold text-[#14213D] group-hover:text-[#2A9D8F] transition-colors leading-snug">
+          <h3 className="text-lg font-bold text-[#17243B] group-hover:text-[#249C91] transition-colors leading-snug">
             <Link href={`/business/${business.slug}`} className="focus:outline-none focus:underline">
               {business.name}
             </Link>

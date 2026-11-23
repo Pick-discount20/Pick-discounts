@@ -60,9 +60,10 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   const [geoMessage, setGeoMessage] = useState<string | null>(null);
 
   const containerRef = useRef<HTMLFormElement>(null);
+  const keywordInputRef = useRef<HTMLInputElement>(null);
   const locationInputRef = useRef<HTMLInputElement>(null);
 
-  // Close dropdowns on outside click
+  // Close dropdowns on outside click or escape key
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
@@ -70,8 +71,20 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         setKeywordSuggestionsOpen(false);
       }
     };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setLocationDropdownOpen(false);
+        setKeywordSuggestionsOpen(false);
+      }
+    };
+
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   const filteredSuggestions = POPULAR_SEARCH_SUGGESTIONS.filter((item) =>
@@ -158,81 +171,93 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       onSubmit={handleSubmit}
       className={`relative w-full ${
         compact
-          ? 'bg-white p-1 rounded-xl border border-slate-200/90 shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center'
-          : 'bg-white p-1 sm:p-1.5 rounded-2xl border border-slate-200/90 shadow-md hover:shadow-lg transition-shadow flex flex-col md:flex-row items-stretch md:items-center'
+          ? 'bg-white p-1 rounded-xl border border-[#E2E8F0] shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center'
+          : 'bg-white p-1 xl:p-1.5 rounded-xl xl:rounded-2xl border border-[#E2E8F0] shadow-sm hover:shadow-md transition-shadow flex flex-col md:flex-row items-stretch md:items-center'
       } ${className}`}
       role="search"
       aria-label="Local business and location search"
     >
       {/* =======================================================================
-          FIRST INPUT — WHAT (Yelp Keyword Search)
+          1. KEYWORD SEARCH INPUT (What)
           ======================================================================= */}
-      <div className="relative flex-1 flex items-center min-w-0 px-3 py-1.5 md:py-2">
+      <div className="relative flex-1 flex items-center min-w-0 px-3 py-1.5 md:py-1">
         <label htmlFor="search-keyword-input" className="sr-only">
           What are you looking for?
         </label>
         <div className="flex items-center gap-2 w-full">
-          <Search className="w-4 h-4 text-slate-400 shrink-0" aria-hidden="true" />
+          <Search className="w-4 h-4 text-[#64748B] shrink-0" aria-hidden="true" />
           <input
             id="search-keyword-input"
+            ref={keywordInputRef}
             type="text"
             value={keyword}
             onChange={(e) => {
               setKeyword(e.target.value);
               setKeywordSuggestionsOpen(true);
             }}
-            onFocus={() => setKeywordSuggestionsOpen(true)}
+            onFocus={() => {
+              setKeywordSuggestionsOpen(true);
+              setLocationDropdownOpen(false);
+            }}
             placeholder="What are you looking for?"
             aria-label="What are you looking for?"
             autoComplete="off"
-            className="w-full bg-transparent text-[#14213D] placeholder-slate-400 text-xs sm:text-sm font-semibold focus:outline-none"
+            className="w-full bg-transparent text-[#17243B] placeholder-slate-400 text-xs sm:text-sm font-medium focus:outline-none"
           />
         </div>
 
-        {/* Autocomplete Suggestions Dropdown */}
+        {/* Autocomplete Suggestions Dropdown: Anchored directly below keyword input, no document flow impact */}
         {keywordSuggestionsOpen && (
           <div
-            className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-slate-100 py-2 z-50 animate-in fade-in duration-150"
+            className="absolute top-[calc(100%+8px)] left-0 w-full sm:w-[320px] md:w-[360px] bg-white rounded-xl shadow-2xl border border-[#E2E8F0] py-2 z-50 animate-in fade-in duration-150"
             role="listbox"
           >
-            <div className="px-3.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1">
-              <Sparkles className="w-3 h-3 text-[#2A9D8F]" />
+            <div className="px-3.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#64748B] flex items-center gap-1.5">
+              <Sparkles className="w-3 h-3 text-[#249C91]" />
               <span>Suggested Searches</span>
             </div>
-            {filteredSuggestions.map((item, idx) => (
-              <button
-                key={idx}
-                type="button"
-                onClick={() => handleSelectSuggestion(item.label)}
-                className="w-full text-left px-3.5 py-2 hover:bg-slate-50 flex items-center justify-between text-xs sm:text-sm text-slate-700 hover:text-[#14213D] transition-colors cursor-pointer"
-              >
-                <div className="flex items-center gap-2.5">
-                  <span className="text-sm">{item.icon}</span>
-                  <span className="font-medium">{item.label}</span>
+            <div className="max-h-64 overflow-y-auto divide-y divide-slate-50">
+              {filteredSuggestions.length > 0 ? (
+                filteredSuggestions.map((item, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => handleSelectSuggestion(item.label)}
+                    className="w-full text-left px-3.5 py-2 hover:bg-slate-50 flex items-center justify-between text-xs sm:text-sm text-[#17243B] transition-colors cursor-pointer"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <span className="text-sm">{item.icon}</span>
+                      <span className="font-medium text-[#17243B]">{item.label}</span>
+                    </div>
+                    <span className="text-[10px] bg-slate-100 text-[#64748B] font-semibold px-2 py-0.5 rounded-full">
+                      {item.category}
+                    </span>
+                  </button>
+                ))
+              ) : (
+                <div className="px-3.5 py-3 text-xs text-[#64748B]">
+                  Press search to discover all results for &ldquo;{keyword}&rdquo;
                 </div>
-                <span className="text-[10px] bg-slate-100 text-slate-500 font-semibold px-2 py-0.5 rounded-full">
-                  {item.category}
-                </span>
-              </button>
-            ))}
+              )}
+            </div>
           </div>
         )}
       </div>
 
-      {/* Vertical Divider (Desktop) */}
-      <div className="hidden md:block w-px h-7 bg-slate-200 shrink-0 self-center" aria-hidden="true" />
+      {/* Subtle Vertical Divider between inputs (Desktop) */}
+      <div className="hidden md:block w-px h-6 bg-[#E2E8F0] shrink-0 self-center" aria-hidden="true" />
 
       {/* =======================================================================
-          SECOND INPUT — WHERE (Location Search: Area, Locality or Pincode)
+          2. LOCATION SEARCH INPUT (Where)
           ======================================================================= */}
-      <div className="relative flex-1 flex items-center min-w-0 px-3 py-1.5 md:py-2 border-t md:border-t-0 border-slate-100">
+      <div className="relative flex-1 flex items-center min-w-0 px-3 py-1.5 md:py-1 border-t md:border-t-0 border-[#E2E8F0]">
         <label htmlFor="search-location-input" className="sr-only">
           Location: Enter area, locality or pincode
         </label>
         <div className="flex items-center gap-2 w-full">
-          <MapPin className="w-4 h-4 text-[#F4A261] shrink-0" aria-hidden="true" />
+          <MapPin className="w-4 h-4 text-[#E66B45] shrink-0" aria-hidden="true" />
           <div className="flex items-center gap-1.5 flex-1 min-w-0">
-            <span className="text-xs font-bold text-slate-400 select-none hidden sm:inline">
+            <span className="text-xs font-bold text-[#64748B] select-none hidden sm:inline">
               Where?
             </span>
             <input
@@ -244,17 +269,20 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                 setLocation(e.target.value);
                 setLocationDropdownOpen(true);
               }}
-              onFocus={() => setLocationDropdownOpen(true)}
+              onFocus={() => {
+                setLocationDropdownOpen(true);
+                setKeywordSuggestionsOpen(false);
+              }}
               placeholder="Enter area, locality or pincode"
               aria-label="Enter area, locality or pincode"
               autoComplete="off"
-              className="w-full bg-transparent text-[#14213D] placeholder-slate-400 text-xs sm:text-sm font-semibold focus:outline-none"
+              className="w-full bg-transparent text-[#17243B] placeholder-slate-400 text-xs sm:text-sm font-medium focus:outline-none"
             />
           </div>
 
-          {/* 5 km Radius Badge */}
+          {/* 5 km Discovery Radius Badge */}
           <span
-            className="shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-[#2A9D8F]/10 text-[#2A9D8F] whitespace-nowrap cursor-default"
+            className="shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-[#249C91]/10 text-[#249C91] whitespace-nowrap cursor-default"
             title="Discovery search radius: 5 km"
           >
             5 km
@@ -263,40 +291,40 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           <button
             type="button"
             onClick={() => setLocationDropdownOpen(!locationDropdownOpen)}
-            className="p-1 text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer"
+            className="p-1 text-[#64748B] hover:text-[#17243B] focus:outline-none cursor-pointer"
             aria-label="Toggle location choices"
           >
             <ChevronDown className="w-3.5 h-3.5" />
           </button>
         </div>
 
-        {/* Location Dropdown Menu with Geolocation & Areas */}
+        {/* Location Dropdown Menu: Anchored directly below location input, no document flow impact */}
         {locationDropdownOpen && (
           <div
-            className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-slate-100 p-2 z-50 animate-in fade-in duration-150 min-w-[280px]"
+            className="absolute top-[calc(100%+8px)] right-0 w-full sm:w-[320px] bg-white rounded-xl shadow-2xl border border-[#E2E8F0] p-2 z-50 animate-in fade-in duration-150"
           >
-            {/* Geolocation Button */}
-            <div className="p-1 pb-2 border-b border-slate-100">
+            {/* Geolocation Trigger */}
+            <div className="p-1 pb-2 border-b border-[#E2E8F0]">
               <button
                 type="button"
                 onClick={handleUseCurrentLocation}
                 disabled={geoStatus === 'loading'}
-                className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-bold text-[#2A9D8F] bg-[#2A9D8F]/10 hover:bg-[#2A9D8F]/20 transition-colors text-left cursor-pointer"
+                className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-xs font-bold text-[#249C91] bg-[#249C91]/10 hover:bg-[#249C91]/15 transition-colors text-left cursor-pointer"
               >
                 {geoStatus === 'loading' ? (
-                  <Loader2 className="w-4 h-4 animate-spin shrink-0 text-[#2A9D8F]" />
+                  <Loader2 className="w-4 h-4 animate-spin shrink-0 text-[#249C91]" />
                 ) : (
-                  <Crosshair className="w-4 h-4 shrink-0 text-[#2A9D8F]" />
+                  <Crosshair className="w-4 h-4 shrink-0 text-[#249C91]" />
                 )}
                 <div className="flex-1 min-w-0">
                   <div className="leading-tight">Use my current location</div>
-                  <div className="text-[10px] font-medium text-slate-500">
+                  <div className="text-[10px] font-medium text-[#64748B]">
                     Find businesses within 5 km of your position
                   </div>
                 </div>
               </button>
 
-              {/* Geolocation Message / Error banner */}
+              {/* Geolocation Feedback Banner */}
               {geoMessage && (
                 <div
                   className={`mt-2 p-2 rounded-lg text-[11px] leading-tight flex items-start gap-1.5 ${
@@ -311,12 +339,12 @@ export const SearchBar: React.FC<SearchBarProps> = ({
               )}
             </div>
 
-            {/* Popular Localities List */}
+            {/* Curated Localities List */}
             <div className="pt-2">
-              <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+              <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#64748B]">
                 Suggested Areas & Localities
               </div>
-              <div className="max-h-52 overflow-y-auto no-scrollbar space-y-0.5">
+              <div className="max-h-52 overflow-y-auto space-y-0.5">
                 {POPULAR_LOCATIONS.map((loc) => {
                   const isSelected = location.toLowerCase() === loc.label.toLowerCase();
                   return (
@@ -328,36 +356,36 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                         setLocationDropdownOpen(false);
                       }}
                       className={`w-full text-left px-3 py-1.5 rounded-lg text-xs flex items-center justify-between hover:bg-slate-50 transition-colors cursor-pointer ${
-                        isSelected ? 'font-bold text-[#2A9D8F] bg-[#2A9D8F]/5' : 'text-slate-700'
+                        isSelected ? 'font-bold text-[#249C91] bg-[#249C91]/5' : 'text-[#17243B]'
                       }`}
                     >
                       <div className="flex items-center gap-2">
-                        <MapPin className={`w-3.5 h-3.5 ${isSelected ? 'text-[#2A9D8F]' : 'text-slate-400'}`} />
+                        <MapPin className={`w-3.5 h-3.5 ${isSelected ? 'text-[#249C91]' : 'text-[#64748B]'}`} />
                         <span>{loc.label}</span>
                       </div>
-                      {isSelected && <Check className="w-3.5 h-3.5 text-[#2A9D8F]" />}
+                      {isSelected && <Check className="w-3.5 h-3.5 text-[#249C91]" />}
                     </button>
                   );
                 })}
               </div>
             </div>
 
-            {/* Radius reminder */}
-            <div className="mt-2 pt-2 border-t border-slate-100 px-3 py-1 text-[10px] font-semibold text-slate-400 flex items-center justify-between">
+            {/* Search Radius Indicator */}
+            <div className="mt-2 pt-2 border-t border-[#E2E8F0] px-3 py-1 text-[10px] font-medium text-[#64748B] flex items-center justify-between">
               <span>Search Radius:</span>
-              <span className="text-[#2A9D8F] font-bold">Within 5 km</span>
+              <span className="text-[#249C91] font-bold">Within 5 km</span>
             </div>
           </div>
         )}
       </div>
 
       {/* =======================================================================
-          SEARCH BUTTON (Yelp High-Emphasis Action with Peak Discount Branding)
+          3. SEARCH SUBMIT BUTTON
           ======================================================================= */}
       <div className="p-1 md:pl-0 shrink-0">
         <button
           type="submit"
-          className="w-full md:w-auto inline-flex items-center justify-center gap-1.5 font-bold text-white bg-[#E76F51] hover:bg-[#d65f42] active:bg-[#c24f33] px-4 md:px-5 py-2.5 rounded-xl transition-all shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-[#E76F51]/50 cursor-pointer text-xs sm:text-sm tracking-tight"
+          className="w-full md:w-auto inline-flex items-center justify-center gap-1.5 font-bold text-white bg-[#E66B45] hover:bg-[#d85d37] active:bg-[#c24f33] px-4 xl:px-5 py-2.5 md:py-2 rounded-lg xl:rounded-xl transition-all shadow-xs hover:shadow focus:outline-none focus:ring-2 focus:ring-[#E66B45]/50 cursor-pointer text-xs sm:text-sm tracking-tight"
           aria-label="Search Peak Discount"
         >
           <Search className="w-4 h-4 text-white" aria-hidden="true" />

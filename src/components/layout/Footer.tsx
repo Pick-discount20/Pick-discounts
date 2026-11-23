@@ -5,13 +5,13 @@ import { DEMO_CATEGORIES, POPULAR_BANGALORE_LOCALITIES } from '@/data/mockData';
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#14213D] text-slate-300 border-t border-slate-800 mt-auto">
+    <footer className="bg-[#17243B] text-slate-300 border-t border-slate-800 mt-auto">
       {/* Trust Banner Section */}
-      <div className="border-b border-slate-800/80 bg-[#0D1629]">
+      <div className="border-b border-slate-800/80 bg-[#0F172A]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="flex items-start gap-3.5">
-              <div className="p-2.5 rounded-xl bg-[#2A9D8F]/15 text-[#2A9D8F] shrink-0">
+              <div className="p-2.5 rounded-xl bg-[#249C91]/15 text-[#249C91] shrink-0">
                 <ShieldCheck className="w-5 h-5" />
               </div>
               <div>
@@ -23,7 +23,7 @@ export const Footer: React.FC = () => {
             </div>
 
             <div className="flex items-start gap-3.5">
-              <div className="p-2.5 rounded-xl bg-[#F4A261]/15 text-[#F4A261] shrink-0">
+              <div className="p-2.5 rounded-xl bg-[#E66B45]/15 text-[#E66B45] shrink-0">
                 <MapPin className="w-5 h-5" />
               </div>
               <div>
@@ -35,7 +35,7 @@ export const Footer: React.FC = () => {
             </div>
 
             <div className="flex items-start gap-3.5">
-              <div className="p-2.5 rounded-xl bg-[#2A9D8F]/15 text-[#2A9D8F] shrink-0">
+              <div className="p-2.5 rounded-xl bg-[#249C91]/15 text-[#249C91] shrink-0">
                 <Award className="w-5 h-5" />
               </div>
               <div>
@@ -57,7 +57,7 @@ export const Footer: React.FC = () => {
             <Link href="/" className="inline-block">
               <span className="text-2xl font-black tracking-tight font-sans">
                 <span className="text-white">PEAK</span>
-                <span className="text-[#2A9D8F] ml-1">DISCOUNT</span>
+                <span className="text-[#249C91] ml-1">DISCOUNT</span>
               </span>
             </Link>
             <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
@@ -65,11 +65,11 @@ export const Footer: React.FC = () => {
             </p>
             <div className="pt-2 text-xs text-slate-400 space-y-1.5">
               <p className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-[#2A9D8F] shrink-0" />
+                <MapPin className="w-4 h-4 text-[#249C91] shrink-0" />
                 Bangalore Commercial Corridors, Karnataka, India
               </p>
               <p className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-[#F4A261] shrink-0" />
+                <Mail className="w-4 h-4 text-[#E66B45] shrink-0" />
                 contact@peakdiscount.com
               </p>
             </div>
@@ -92,7 +92,7 @@ export const Footer: React.FC = () => {
                 </li>
               ))}
               <li>
-                <Link href="/search" className="text-[#2A9D8F] hover:underline font-medium">
+                <Link href="/search" className="text-[#249C91] hover:underline font-medium">
                   View all categories →
                 </Link>
               </li>
@@ -116,14 +116,14 @@ export const Footer: React.FC = () => {
                 </li>
               ))}
               <li>
-                <Link href="/search" className="text-[#2A9D8F] hover:underline font-medium">
+                <Link href="/search" className="text-[#249C91] hover:underline font-medium">
                   All locations →
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Business Owners & Admin */}
+          {/* Business Solutions */}
           <div>
             <h6 className="text-xs font-bold uppercase tracking-wider text-white mb-3">
               Business Solutions

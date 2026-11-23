@@ -131,12 +131,12 @@ function SearchResultsContent() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F8F7F3]">
+    <div className="min-h-screen flex flex-col bg-[#F8FAFC]">
       <DemoDisclaimer />
       <Navbar />
 
       {/* Sleek Photographic Search Banner (Yelp / Booking style) */}
-      <div className="relative bg-[#14213D] border-b border-slate-200/80 py-6 sm:py-8 px-4 sm:px-6 lg:px-8 overflow-hidden text-white">
+      <div className="relative bg-[#17243B] border-b border-[#E2E8F0] py-6 sm:py-8 px-4 sm:px-6 lg:px-8 overflow-hidden text-white">
         <div className="absolute inset-0 pointer-events-none opacity-20">
           <Image
             src={getAssetPath('/images/banners/search-banner.jpg')}
@@ -144,7 +144,7 @@ function SearchResultsContent() {
             fill
             className="object-cover object-center"
           />
-          <div className="absolute inset-0 bg-[#14213D]/70" />
+          <div className="absolute inset-0 bg-[#17243B]/70" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="min-w-0 space-y-1">
@@ -158,7 +158,7 @@ function SearchResultsContent() {
             <div className="flex items-center gap-2 flex-wrap text-xs text-slate-300">
               <span>Verified local service providers</span>
               <span className="w-1 h-1 rounded-full bg-slate-400" />
-              <span className="inline-flex items-center gap-1 font-bold text-[#2A9D8F] bg-[#2A9D8F]/15 px-2 py-0.5 rounded-full">
+              <span className="inline-flex items-center gap-1 font-bold text-[#249C91] bg-[#249C91]/15 px-2 py-0.5 rounded-full">
                 Searching within {radiusParam} km of {locationParam}
               </span>
             </div>
@@ -175,21 +175,21 @@ function SearchResultsContent() {
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Results Header: Query heading, result count & Controls */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-200/80">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-[#E2E8F0]">
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-xl sm:text-2xl font-extrabold text-[#14213D] tracking-tight">
+              <h1 className="text-xl sm:text-2xl font-extrabold text-[#17243B] tracking-tight">
                 {queryParam
                   ? `Results for “${queryParam}”`
                   : categoryParam
                   ? `${categoryParam} in Bangalore`
                   : 'All Verified Local Businesses'}
               </h1>
-              <span className="text-xs bg-[#2A9D8F]/10 text-[#2A9D8F] font-bold px-2.5 py-0.5 rounded-full">
+              <span className="text-xs bg-[#249C91]/10 text-[#249C91] font-bold px-2.5 py-0.5 rounded-full">
                 {filteredBusinesses.length} found
               </span>
             </div>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs text-[#64748B] mt-0.5">
               Showing verified businesses across {locationParam || 'Bangalore, Karnataka'}
             </p>
           </div>
@@ -200,22 +200,22 @@ function SearchResultsContent() {
             <button
               type="button"
               onClick={() => setMobileFilterOpen(true)}
-              className="lg:hidden inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-700 shadow-2xs hover:bg-slate-50"
+              className="lg:hidden inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-white border border-[#E2E8F0] text-slate-700 shadow-2xs hover:bg-slate-50"
             >
-              <SlidersHorizontal className="w-3.5 h-3.5 text-[#2A9D8F]" />
+              <SlidersHorizontal className="w-3.5 h-3.5 text-[#249C91]" />
               <span>Filters</span>
               {(filters.categories.length > 0 || filters.minRating > 0 || filters.verifiedOnly) && (
-                <span className="w-2 h-2 rounded-full bg-[#2A9D8F]" />
+                <span className="w-2 h-2 rounded-full bg-[#249C91]" />
               )}
             </button>
 
             {/* Sort Dropdown */}
-            <div className="flex items-center gap-1.5 bg-white border border-slate-200 rounded-xl px-3 py-1.5 shadow-2xs text-xs text-slate-600">
-              <span className="text-slate-400 font-medium">Sort:</span>
+            <div className="flex items-center gap-1.5 bg-white border border-[#E2E8F0] rounded-xl px-3 py-1.5 shadow-2xs text-xs text-slate-600">
+              <span className="text-[#64748B] font-medium">Sort:</span>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as 'recommended' | 'rating' | 'reviews' | 'distance')}
-                className="bg-transparent font-bold text-[#14213D] focus:outline-none cursor-pointer"
+                className="bg-transparent font-bold text-[#17243B] focus:outline-none cursor-pointer"
                 aria-label="Sort listings"
               >
                 <option value="recommended">Recommended & Verified</option>
@@ -226,14 +226,14 @@ function SearchResultsContent() {
             </div>
 
             {/* View Mode Toggle: List vs Map */}
-            <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200/80">
+            <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-[#E2E8F0]">
               <button
                 type="button"
                 onClick={() => setViewMode('list')}
                 className={`p-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all ${
                   viewMode === 'list'
-                    ? 'bg-white text-[#14213D] shadow-xs'
-                    : 'text-slate-500 hover:text-[#14213D]'
+                    ? 'bg-white text-[#17243B] shadow-xs'
+                    : 'text-slate-500 hover:text-[#17243B]'
                 }`}
                 title="List View"
               >
@@ -245,12 +245,12 @@ function SearchResultsContent() {
                 onClick={() => setViewMode('map')}
                 className={`p-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all ${
                   viewMode === 'map'
-                    ? 'bg-white text-[#14213D] shadow-xs'
-                    : 'text-slate-500 hover:text-[#14213D]'
+                    ? 'bg-white text-[#17243B] shadow-xs'
+                    : 'text-slate-500 hover:text-[#17243B]'
                 }`}
                 title="Map & Split View"
               >
-                <MapIcon className="w-4 h-4 text-[#2A9D8F]" />
+                <MapIcon className="w-4 h-4 text-[#249C91]" />
                 <span className="hidden sm:inline">Map</span>
               </button>
             </div>

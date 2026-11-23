@@ -38,16 +38,16 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({ category, compact = 
     return (
       <Link
         href={`/search?category=${encodeURIComponent(category.name)}`}
-        className="group flex items-center gap-3 p-3 bg-white rounded-xl border border-slate-200/80 hover:border-[#2A9D8F]/50 shadow-xs hover:shadow-md transition-all"
+        className="group flex items-center gap-3 p-3 bg-white rounded-xl border border-[#E2E8F0] hover:border-[#249C91]/50 shadow-xs hover:shadow-md transition-all"
       >
-        <div className="w-10 h-10 rounded-lg bg-[#14213D]/5 text-[#14213D] group-hover:bg-[#2A9D8F] group-hover:text-white transition-colors flex items-center justify-center shrink-0">
+        <div className="w-10 h-10 rounded-lg bg-[#17243B]/5 text-[#17243B] group-hover:bg-[#249C91] group-hover:text-white transition-colors flex items-center justify-center shrink-0">
           <IconComponent className="w-5 h-5" />
         </div>
         <div className="min-w-0 flex-1">
-          <h4 className="text-xs font-semibold text-[#14213D] group-hover:text-[#2A9D8F] truncate transition-colors">
+          <h4 className="text-xs font-semibold text-[#17243B] group-hover:text-[#249C91] truncate transition-colors">
             {category.name}
           </h4>
-          <p className="text-[11px] text-slate-500">{category.count} listings</p>
+          <p className="text-[11px] text-[#64748B]">{category.count} listings</p>
         </div>
       </Link>
     );
