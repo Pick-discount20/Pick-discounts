@@ -80,7 +80,7 @@ const HERO_SLIDES: HeroSlide[] = [
   },
 ];
 
-const AUTOPLAY_INTERVAL = 5000; // 5 seconds per slide
+const AUTOPLAY_INTERVAL = 4000; // 4 seconds per slide for natural reading pace
 
 export const HeroSlider: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -103,7 +103,7 @@ export const HeroSlider: React.FC = () => {
     setCurrentSlide(index);
   }, []);
 
-  // Autoplay management: transitions every 5s, pauses on hover, respects reduced motion
+  // Autoplay management: transitions every 4s, pauses on hover, respects reduced motion
   useEffect(() => {
     if (isHovered) {
       if (timerRef.current) clearInterval(timerRef.current);
@@ -163,17 +163,17 @@ export const HeroSlider: React.FC = () => {
 
         {/* =======================================================================
             RESTRAINED BALANCED OVERLAY (YELP-INSPIRED)
-            Consistent visual treatment across the entire viewport.
-            No heavy blue block on the left; image is clearly visible edge-to-edge.
+            Subtle balanced overlay allowing the photograph to shine through edge-to-edge.
+            No heavy one-sided blue gradients; provides clean contrast for white text.
             ======================================================================= */}
-        <div className="absolute inset-0 z-10 bg-black/45 pointer-events-none" />
-        <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/60 via-transparent to-black/40 pointer-events-none" />
+        <div className="absolute inset-0 z-10 bg-slate-950/25 pointer-events-none" />
+        <div className="absolute inset-0 z-10 bg-gradient-to-t from-slate-950/50 via-transparent to-slate-950/20 pointer-events-none" />
       </div>
 
       {/* =========================================================================
           HERO MAIN CONTENT (Left-Aligned, Simple & Concise)
           ========================================================================= */}
-      <div className="relative z-20 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-28 sm:pt-32 lg:pt-28 pb-16 flex items-center justify-between gap-8">
+      <div className="relative z-20 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-32 sm:pt-36 lg:pt-36 pb-20 flex items-center justify-between gap-8">
         
         {/* Left-Aligned Content Column */}
         <div className="max-w-2xl text-left space-y-5">
@@ -184,7 +184,7 @@ export const HeroSlider: React.FC = () => {
             className="animate-in fade-in duration-500 ease-out space-y-4 motion-reduce:animate-none"
           >
             {/* 1. Small Category Label Pill */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/30 text-white backdrop-blur-md text-xs font-semibold uppercase tracking-wider border border-white/20 shadow-xs">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/25 text-white backdrop-blur-md text-xs font-semibold uppercase tracking-wider border border-white/20 shadow-xs">
               <activeSlide.icon className="w-3.5 h-3.5 text-[#E66B45]" />
               <span>Featured: {activeSlide.category}</span>
             </div>
@@ -195,7 +195,7 @@ export const HeroSlider: React.FC = () => {
             </h1>
 
             {/* 3. Short Supporting Description */}
-            <p className="text-sm sm:text-base lg:text-lg text-white/90 font-normal leading-relaxed max-w-xl drop-shadow-sm">
+            <p className="text-sm sm:text-base lg:text-lg text-white/95 font-normal leading-relaxed max-w-xl drop-shadow-sm">
               {activeSlide.supportingText}
             </p>
 
@@ -212,7 +212,7 @@ export const HeroSlider: React.FC = () => {
           </div>
 
           {/* Slide Progress Indicators & Subtle Arrow Controls */}
-          <div className="pt-2 flex items-center gap-4">
+          <div className="pt-3 flex items-center gap-4">
             <div
               className="flex items-center gap-2"
               role="tablist"
@@ -248,7 +248,7 @@ export const HeroSlider: React.FC = () => {
                 type="button"
                 onClick={prevSlide}
                 aria-label="Previous slide"
-                className="w-7 h-7 rounded-lg bg-black/30 hover:bg-black/50 text-white flex items-center justify-center transition-colors cursor-pointer border border-white/10"
+                className="w-7 h-7 rounded-lg bg-black/25 hover:bg-black/45 text-white flex items-center justify-center transition-colors cursor-pointer border border-white/15"
               >
                 <ChevronLeft className="w-3.5 h-3.5" />
               </button>
@@ -256,7 +256,7 @@ export const HeroSlider: React.FC = () => {
                 type="button"
                 onClick={nextSlide}
                 aria-label="Next slide"
-                className="w-7 h-7 rounded-lg bg-black/30 hover:bg-black/50 text-white flex items-center justify-center transition-colors cursor-pointer border border-white/10"
+                className="w-7 h-7 rounded-lg bg-black/25 hover:bg-black/45 text-white flex items-center justify-center transition-colors cursor-pointer border border-white/15"
               >
                 <ChevronRight className="w-3.5 h-3.5" />
               </button>

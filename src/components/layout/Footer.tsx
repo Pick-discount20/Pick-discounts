@@ -17,7 +17,7 @@ export const Footer: React.FC = () => {
               <div>
                 <h5 className="font-bold text-white text-sm">Verified Credentials</h5>
                 <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-                  Every verified business badge on Peak Discount requires strict proof of trade registration, premises utility bills, and contact authenticity.
+                  Every verified business badge on Pick Discount requires strict proof of trade registration, premises utility bills, and contact authenticity.
                 </p>
               </div>
             </div>
@@ -70,7 +70,7 @@ export const Footer: React.FC = () => {
               </p>
               <p className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-[#E66B45] shrink-0" />
-                contact@peakdiscount.com
+                contact@pickdiscount.com
               </p>
             </div>
           </div>

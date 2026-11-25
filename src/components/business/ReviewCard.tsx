@@ -34,10 +34,10 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({ review, onReport }) => {
 
           <div>
             <div className="flex items-center gap-2">
-              <h4 className="font-bold text-sm text-[#14213D]">{review.userName}</h4>
+              <h4 className="font-bold text-sm text-[#17243B]">{review.userName}</h4>
               {review.verifiedCustomer && (
-                <span className="inline-flex items-center gap-1 text-[10px] bg-emerald-50 text-emerald-700 font-semibold px-2 py-0.5 rounded-full border border-emerald-200">
-                  <CheckCircle className="w-3 h-3 text-[#2A9D8F]" />
+                <span className="inline-flex items-center gap-1 text-[10px] bg-[#249C91]/10 text-[#249C91] font-semibold px-2 py-0.5 rounded-full border border-[#249C91]/20">
+                  <CheckCircle className="w-3 h-3 text-[#249C91]" />
                   Verified Customer
                 </span>
               )}
@@ -52,7 +52,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({ review, onReport }) => {
 
       {/* Review Content */}
       <div className="mt-3.5 space-y-1.5">
-        <h5 className="font-bold text-sm text-[#14213D]">{review.title}</h5>
+        <h5 className="font-bold text-sm text-[#17243B]">{review.title}</h5>
         <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-normal">
           {review.comment}
         </p>
