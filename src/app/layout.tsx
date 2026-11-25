@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Peak Discount — Local Business Discovery & Verification Marketplace",
+  title: "Pick Discount — Local Business Discovery & Verification Marketplace",
   description: "Find trusted local businesses, explore verified reviews, and connect with reputable service providers around you.",
 };
 

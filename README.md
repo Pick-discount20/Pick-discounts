@@ -1,4 +1,4 @@
-# Peak Discount — Local Business Discovery Marketplace
+# Pick Discount — Local Business Discovery Marketplace
 
 A local business discovery and verification marketplace built using Next.js, React, TypeScript, and Tailwind CSS.
 
@@ -6,7 +6,7 @@ A local business discovery and verification marketplace built using Next.js, Rea
 
 ## 📌 Project Overview
 
-**Peak Discount** is a modern frontend prototype designed to demonstrate local business discovery, verification, and community trust. It provides an intuitive, high-quality user experience for consumers discovering trusted local establishments, business owners managing listings and verification claims, and platform administrators moderating content.
+**Pick Discount** is a modern frontend prototype designed to demonstrate local business discovery, verification, and community trust. It provides an intuitive, high-quality user experience for consumers discovering trusted local establishments, business owners managing listings and verification claims, and platform administrators moderating content.
 
 > **Note:** This project is a frontend prototype built for client review and UX demonstration prior to MVP 1 backend development. All data is mock-driven and runs client-side without external database or authentication dependencies.
 
