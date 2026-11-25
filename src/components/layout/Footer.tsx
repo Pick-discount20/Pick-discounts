@@ -56,7 +56,7 @@ export const Footer: React.FC = () => {
           <div className="lg:col-span-2 space-y-4">
             <Link href="/" className="inline-block">
               <span className="text-2xl font-black tracking-tight font-sans">
-                <span className="text-white">PEAK</span>
+                <span className="text-white">PICK</span>
                 <span className="text-[#249C91] ml-1">DISCOUNT</span>
               </span>
             </Link>
@@ -160,7 +160,7 @@ export const Footer: React.FC = () => {
 
         {/* Bottom Legal bar */}
         <div className="mt-12 pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
-          <p>© 2026 Peak Discount. Local Business Discovery & Verification Platform. All rights reserved.</p>
+          <p>© 2026 Pick Discount. Local Business Discovery &amp; Verification Platform. All rights reserved.</p>
           <div className="flex items-center gap-3 text-slate-400">
             <span>Verified Local Discovery</span>
             <span>•</span>

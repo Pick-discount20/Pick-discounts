@@ -129,7 +129,7 @@ export default function HomePage() {
         </section>
 
         {/* =========================================================================
-            5. EXPLORE BUSINESSES BY BANGALORE LOCATION
+            5. EXPLORE BUSINESSES BY POPULAR LOCALITY
             ========================================================================= */}
         <section className="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-8">
@@ -137,7 +137,7 @@ export default function HomePage() {
               Hyperlocal Discovery
             </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-[#17243B] tracking-tight mt-1">
-              Explore Bangalore By Locality
+              Explore Popular Commercial Corridors
             </h2>
             <p className="text-xs sm:text-sm text-[#64748B] mt-1">
               Quickly find verified services right within your commercial neighbourhood.
@@ -146,12 +146,12 @@ export default function HomePage() {
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             {[
-              { name: 'Indiranagar', count: 184, image: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=400&q=80' },
-              { name: 'Koramangala', count: 210, image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=400&q=80' },
-              { name: 'HSR Layout', count: 142, image: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=400&q=80' },
-              { name: 'Jayanagar', count: 128, image: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=400&q=80' },
-              { name: 'Whitefield', count: 165, image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=400&q=80' },
-              { name: 'Lavelle Road', count: 76, image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=400&q=80' },
+              { name: 'Satellite', count: 195, image: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=400&q=80' },
+              { name: 'Vastrapur', count: 148, image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=400&q=80' },
+              { name: 'SG Highway', count: 215, image: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=400&q=80' },
+              { name: 'Indiranagar', count: 184, image: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=400&q=80' },
+              { name: 'Koramangala', count: 210, image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=400&q=80' },
+              { name: 'Whitefield', count: 165, image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=400&q=80' },
             ].map((loc) => (
               <Link
                 key={loc.name}
@@ -176,7 +176,7 @@ export default function HomePage() {
         </section>
 
         {/* =========================================================================
-            6. WHY CHOOSE PEAK DISCOUNT? (Trust-First Pillars)
+            6. WHY CHOOSE PICK DISCOUNT? (Trust-First Pillars)
             ========================================================================= */}
         <section className="py-12 sm:py-16 bg-[#17243B] text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -185,7 +185,7 @@ export default function HomePage() {
                 The Trust Standard
               </span>
               <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight mt-1 text-white">
-                Why Peak Discount Is Different
+                Why Pick Discount Is Different
               </h2>
               <p className="text-xs sm:text-sm text-slate-300 mt-2">
                 We believe local discovery must prioritize verified legitimacy over paid ad rankings.

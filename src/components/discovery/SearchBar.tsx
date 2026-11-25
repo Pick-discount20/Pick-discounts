@@ -386,7 +386,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         <button
           type="submit"
           className="w-full md:w-auto inline-flex items-center justify-center gap-1.5 font-bold text-white bg-[#E66B45] hover:bg-[#d85d37] active:bg-[#c24f33] px-4 xl:px-5 py-2.5 md:py-2 rounded-lg xl:rounded-xl transition-all shadow-xs hover:shadow focus:outline-none focus:ring-2 focus:ring-[#E66B45]/50 cursor-pointer text-xs sm:text-sm tracking-tight"
-          aria-label="Search Peak Discount"
+          aria-label="Search Pick Discount"
         >
           <Search className="w-4 h-4 text-white" aria-hidden="true" />
           <span>Search</span>

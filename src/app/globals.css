@@ -18,7 +18,6 @@
   --color-offwhite: #F8FAFC;
 
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  --font-display: 'Playfair Display', 'Cormorant Garamond', 'Baskerville', 'Georgia', serif;
 }
 
 :root {
@@ -47,14 +46,6 @@ body {
 a {
   color: inherit;
   text-decoration: inherit;
-}
-
-/* Elegant Display Editorial Typography */
-.font-display {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 500;
-  letter-spacing: -0.01em;
 }
 
 /* Smooth motion accessibility settings */

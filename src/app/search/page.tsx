@@ -10,11 +10,12 @@ import {
   X,
   Search as SearchIcon,
   RotateCcw,
+  Star,
+  MapPin,
 } from 'lucide-react';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { DemoDisclaimer } from '@/components/layout/DemoDisclaimer';
-import { SearchBar } from '@/components/discovery/SearchBar';
 import { BusinessCard } from '@/components/discovery/BusinessCard';
 import { FilterSidebar, FilterState } from '@/components/discovery/FilterSidebar';
 import { MapPlaceholder } from '@/components/discovery/MapPlaceholder';
@@ -24,9 +25,14 @@ import { getAssetPath } from '@/utils/assetPath';
 function SearchResultsContent() {
   const searchParams = useSearchParams();
   const queryParam = searchParams.get('q') || '';
-  const locationParam = searchParams.get('location') || 'Ahmedabad, Gujarat';
+  const locationParam = searchParams.get('location') || 'Satellite, Ahmedabad';
   const categoryParam = searchParams.get('category') || '';
   const radiusParam = searchParams.get('radius') || '5';
+  const intentParam = searchParams.get('intent') || '';
+  const isReviewIntent = intentParam === 'review';
+
+  // Extract clean locality or city name for dynamic location-aware headlines
+  const displayLocation = locationParam.split(',')[0].trim() || 'Your Area';
 
   // Layout mode: 'list' | 'map'
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
@@ -135,41 +141,71 @@ function SearchResultsContent() {
       <DemoDisclaimer />
       <Navbar />
 
-      {/* Sleek Photographic Search Banner (Yelp / Booking style) */}
-      <div className="relative bg-[#17243B] border-b border-[#E2E8F0] py-6 sm:py-8 px-4 sm:px-6 lg:px-8 overflow-hidden text-white">
-        <div className="absolute inset-0 pointer-events-none opacity-20">
+      {/* Write a Review Intent Notification Banner */}
+      {isReviewIntent && (
+        <div className="bg-[#17243B] text-white py-4 px-4 sm:px-6 lg:px-8 border-b border-[#E2E8F0]">
+          <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-[#E66B45]/20 text-[#E66B45] flex items-center justify-center shrink-0">
+                <Star className="w-5 h-5 fill-current" />
+              </div>
+              <div>
+                <h2 className="text-sm font-bold text-white leading-tight">
+                  Write a Customer Review
+                </h2>
+                <p className="text-xs text-slate-300">
+                  Select your verified establishment below to share your authentic customer experience.
+                </p>
+              </div>
+            </div>
+            <span className="hidden sm:inline-block text-[11px] font-semibold text-[#249C91] bg-white/10 px-3 py-1 rounded-full">
+              Authentic Feedback Protected
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* Streamlined Search Context Banner (No redundant desktop search bar, single source in Header) */}
+      <div className="relative bg-[#17243B] border-b border-[#E2E8F0] py-6 sm:py-7 px-4 sm:px-6 lg:px-8 overflow-hidden text-white">
+        <div className="absolute inset-0 pointer-events-none opacity-15">
           <Image
             src={getAssetPath('/images/banners/search-banner.jpg')}
             alt="Search background texture"
             fill
             className="object-cover object-center"
           />
-          <div className="absolute inset-0 bg-[#17243B]/70" />
+          <div className="absolute inset-0 bg-[#17243B]/80" />
         </div>
-        <div className="relative z-10 max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="relative z-10 max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="min-w-0 space-y-1">
+            <div className="flex items-center gap-2 flex-wrap text-xs text-slate-300">
+              <span className="inline-flex items-center gap-1 font-bold text-[#249C91] bg-[#249C91]/15 px-2.5 py-0.5 rounded-full">
+                <MapPin className="w-3 h-3" />
+                <span>Searching within {radiusParam} km of {locationParam}</span>
+              </span>
+              <span>•</span>
+              <span>{filteredBusinesses.length} verified listings found</span>
+            </div>
             <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">
               {queryParam
-                ? `Results for “${queryParam}”`
+                ? `Results for “${queryParam}” in ${displayLocation}`
                 : categoryParam
-                ? `${categoryParam}`
-                : 'Explore Verified Local Businesses'}
+                ? `${categoryParam} in ${displayLocation}`
+                : `Verified Businesses in ${displayLocation}`}
             </h1>
-            <div className="flex items-center gap-2 flex-wrap text-xs text-slate-300">
-              <span>Verified local service providers</span>
-              <span className="w-1 h-1 rounded-full bg-slate-400" />
-              <span className="inline-flex items-center gap-1 font-bold text-[#249C91] bg-[#249C91]/15 px-2 py-0.5 rounded-full">
-                Searching within {radiusParam} km of {locationParam}
-              </span>
-            </div>
           </div>
-          <div className="w-full md:max-w-xl">
-            <SearchBar
-              initialKeyword={queryParam}
-              initialLocation={locationParam}
-              compact={true}
-            />
-          </div>
+
+          {/* Quick Filter Reset if active */}
+          {(filters.categories.length > 0 || filters.minRating > 0 || queryParam) && (
+            <button
+              type="button"
+              onClick={resetFilters}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/10 hover:bg-white/20 text-white transition-colors w-fit border border-white/20"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span>Reset active filters</span>
+            </button>
+          )}
         </div>
       </div>
 
@@ -178,19 +214,19 @@ function SearchResultsContent() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-[#E2E8F0]">
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-xl sm:text-2xl font-extrabold text-[#17243B] tracking-tight">
+              <h2 className="text-lg sm:text-xl font-extrabold text-[#17243B] tracking-tight">
                 {queryParam
                   ? `Results for “${queryParam}”`
                   : categoryParam
-                  ? `${categoryParam} in Bangalore`
-                  : 'All Verified Local Businesses'}
-              </h1>
+                  ? `${categoryParam} in ${displayLocation}`
+                  : `All Verified Businesses in ${displayLocation}`}
+              </h2>
               <span className="text-xs bg-[#249C91]/10 text-[#249C91] font-bold px-2.5 py-0.5 rounded-full">
                 {filteredBusinesses.length} found
               </span>
             </div>
             <p className="text-xs text-[#64748B] mt-0.5">
-              Showing verified businesses across {locationParam || 'Bangalore, Karnataka'}
+              Showing verified local providers across {locationParam}
             </p>
           </div>
 
@@ -218,7 +254,7 @@ function SearchResultsContent() {
                 className="bg-transparent font-bold text-[#17243B] focus:outline-none cursor-pointer"
                 aria-label="Sort listings"
               >
-                <option value="recommended">Recommended & Verified</option>
+                <option value="recommended">Recommended &amp; Verified</option>
                 <option value="rating">Highest Rated (4.8+)</option>
                 <option value="reviews">Most Reviewed</option>
                 <option value="distance">Nearest Distance</option>
@@ -270,13 +306,12 @@ function SearchResultsContent() {
           </div>
 
           {/* Results Column */}
-          <div className={`col-span-1 ${viewMode === 'map' ? 'lg:col-span-3' : 'lg:col-span-3'}`}>
+          <div className="col-span-1 lg:col-span-3">
             {viewMode === 'map' ? (
               /* Map View (Split screen style) */
               <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
-                {/* Scrollable list on xl screens */}
                 <div className="xl:col-span-5 space-y-4 max-h-[800px] overflow-y-auto pr-1">
-                  <div className="text-xs text-slate-500 font-semibold px-1">
+                  <div className="text-xs text-[#64748B] font-semibold px-1">
                     Showing {filteredBusinesses.length} businesses on map
                   </div>
                   {filteredBusinesses.map((biz) => (
@@ -284,11 +319,10 @@ function SearchResultsContent() {
                   ))}
                 </div>
 
-                {/* Interactive Map Visual */}
                 <div className="xl:col-span-7 sticky top-24">
                   <MapPlaceholder
                     businesses={filteredBusinesses}
-                    selectedLocality={locationParam || 'Bangalore'}
+                    selectedLocality={displayLocation}
                   />
                 </div>
               </div>
@@ -297,20 +331,20 @@ function SearchResultsContent() {
               <div className="space-y-4">
                 {filteredBusinesses.length === 0 ? (
                   /* Empty state */
-                  <div className="bg-white rounded-2xl border border-slate-200/80 p-12 text-center space-y-4 shadow-xs">
+                  <div className="bg-white rounded-2xl border border-[#E2E8F0] p-12 text-center space-y-4 shadow-xs">
                     <div className="w-14 h-14 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto">
                       <SearchIcon className="w-6 h-6" />
                     </div>
                     <div>
-                      <h3 className="text-base font-bold text-[#14213D]">No businesses found within 5 km of this location.</h3>
-                      <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+                      <h3 className="text-base font-bold text-[#17243B]">No businesses found within 5 km of this location.</h3>
+                      <p className="text-xs text-[#64748B] mt-1 max-w-sm mx-auto">
                         We couldn&apos;t determine your location or found no matches nearby. Please enter your area manually or reset your category filters.
                       </p>
                     </div>
                     <button
                       type="button"
                       onClick={resetFilters}
-                      className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#2A9D8F] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#21766C] transition-colors"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#249C91] text-white text-xs font-bold rounded-xl shadow-xs hover:bg-[#1f7e75] transition-colors"
                     >
                       <RotateCcw className="w-3.5 h-3.5" />
                       <span>Reset All Filters</span>
@@ -323,8 +357,8 @@ function SearchResultsContent() {
                     ))}
 
                     {/* Pagination demonstration */}
-                    <div className="pt-8 pb-4 flex items-center justify-between border-t border-slate-200/80">
-                      <span className="text-xs text-slate-500">
+                    <div className="pt-8 pb-4 flex items-center justify-between border-t border-[#E2E8F0]">
+                      <span className="text-xs text-[#64748B]">
                         Showing 1–{filteredBusinesses.length} of {filteredBusinesses.length} businesses
                       </span>
                       <div className="flex items-center gap-1">
@@ -332,7 +366,7 @@ function SearchResultsContent() {
                           type="button"
                           disabled={currentPage === 1}
                           onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                          className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white border border-slate-200 text-slate-600 disabled:opacity-40"
+                          className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white border border-[#E2E8F0] text-[#64748B] disabled:opacity-40"
                         >
                           Previous
                         </button>
@@ -341,28 +375,16 @@ function SearchResultsContent() {
                           onClick={() => setCurrentPage(1)}
                           className={`px-3 py-1.5 text-xs font-bold rounded-lg ${
                             currentPage === 1
-                              ? 'bg-[#14213D] text-white'
-                              : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                              ? 'bg-[#17243B] text-white'
+                              : 'bg-white border border-[#E2E8F0] text-[#64748B] hover:bg-slate-50'
                           }`}
                         >
                           1
                         </button>
                         <button
                           type="button"
-                          onClick={() => setCurrentPage(2)}
-                          className={`px-3 py-1.5 text-xs font-bold rounded-lg ${
-                            currentPage === 2
-                              ? 'bg-[#14213D] text-white'
-                              : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
-                          }`}
-                        >
-                          2
-                        </button>
-                        <button
-                          type="button"
-                          disabled={currentPage === 2}
-                          onClick={() => setCurrentPage((p) => Math.min(2, p + 1))}
-                          className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-40"
+                          disabled={currentPage === 1}
+                          className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white border border-[#E2E8F0] text-[#64748B] disabled:opacity-40"
                         >
                           Next
                         </button>
@@ -385,7 +407,7 @@ function SearchResultsContent() {
           />
           <div className="relative z-10 bg-white rounded-t-3xl max-h-[85vh] overflow-y-auto p-5 shadow-2xl animate-in slide-in-from-bottom duration-200">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
-              <h3 className="font-extrabold text-base text-[#14213D]">Discovery Filters</h3>
+              <h3 className="font-extrabold text-base text-[#17243B]">Discovery Filters</h3>
               <button
                 type="button"
                 onClick={() => setMobileFilterOpen(false)}
@@ -411,14 +433,14 @@ function SearchResultsContent() {
                   resetFilters();
                   setMobileFilterOpen(false);
                 }}
-                className="w-1/2 py-2.5 text-xs font-bold text-slate-600 bg-slate-100 rounded-xl"
+                className="w-1/2 py-2.5 text-xs font-bold text-[#64748B] bg-slate-100 rounded-xl"
               >
                 Reset All
               </button>
               <button
                 type="button"
                 onClick={() => setMobileFilterOpen(false)}
-                className="w-1/2 py-2.5 text-xs font-bold text-white bg-[#2A9D8F] rounded-xl shadow-xs"
+                className="w-1/2 py-2.5 text-xs font-bold text-white bg-[#249C91] rounded-xl shadow-xs"
               >
                 Apply ({filteredBusinesses.length})
               </button>
@@ -434,7 +456,7 @@ function SearchResultsContent() {
 
 export default function SearchPage() {
   return (
-    <Suspense fallback={<div className="p-8 text-center text-sm font-semibold text-slate-500">Finding businesses near you...</div>}>
+    <Suspense fallback={<div className="p-8 text-center text-sm font-semibold text-[#64748B]">Finding businesses near you...</div>}>
       <SearchResultsContent />
     </Suspense>
   );

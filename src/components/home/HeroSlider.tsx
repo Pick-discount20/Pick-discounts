@@ -22,8 +22,7 @@ interface HeroSlide {
   shortLabel: string;
   icon: LucideIcon;
   image: string;
-  headlineRegular: string;
-  headlineAccent: string;
+  heading: string;
   supportingText: string;
   queryParam: string;
 }
@@ -35,9 +34,8 @@ const HERO_SLIDES: HeroSlide[] = [
     shortLabel: 'Dining',
     icon: UtensilsCrossed,
     image: getAssetPath('/images/hero/dining.jpg'),
-    headlineRegular: 'Discover Places ',
-    headlineAccent: 'Worth Experiencing.',
-    supportingText: 'Find exceptional restaurants, curated cafes and authentic culinary destinations verified for quality.',
+    heading: 'Discover Places Worth Experiencing',
+    supportingText: 'Find authentic local dining, curated cafes and culinary destinations verified for quality.',
     queryParam: 'Restaurants & Cafes',
   },
   {
@@ -46,8 +44,7 @@ const HERO_SLIDES: HeroSlide[] = [
     shortLabel: 'Healthcare',
     icon: Stethoscope,
     image: getAssetPath('/images/hero/healthcare.jpg'),
-    headlineRegular: 'Find Care ',
-    headlineAccent: 'You Can Trust.',
+    heading: 'Find Care You Can Trust',
     supportingText: 'Connect with certified doctors, diagnostic centres and licensed medical specialists with verified credentials.',
     queryParam: 'Healthcare & Clinics',
   },
@@ -57,9 +54,8 @@ const HERO_SLIDES: HeroSlide[] = [
     shortLabel: 'Wellness',
     icon: Sparkles,
     image: getAssetPath('/images/hero/beauty.jpg'),
-    headlineRegular: 'Make Time for a ',
-    headlineAccent: 'Better You.',
-    supportingText: 'Explore top-rated luxury spas, modern salons and wellness therapists rated for hygiene and service.',
+    heading: 'Make Time for a Better You',
+    supportingText: 'Explore top-rated luxury spas, modern hair salons and holistic wellness therapists.',
     queryParam: 'Beauty & Wellness',
   },
   {
@@ -68,9 +64,8 @@ const HERO_SLIDES: HeroSlide[] = [
     shortLabel: 'Home Care',
     icon: Home,
     image: getAssetPath('/images/hero/home.jpg'),
-    headlineRegular: 'Find the Right Experts ',
-    headlineAccent: 'for Your Home.',
-    supportingText: 'Book background-checked electricians, licensed contractors and verified interior specialists.',
+    heading: 'Find the Right Experts for Your Home',
+    supportingText: 'Book verified electricians, licensed contractors, plumbers and bespoke interior specialists.',
     queryParam: 'Home Services',
   },
   {
@@ -79,8 +74,7 @@ const HERO_SLIDES: HeroSlide[] = [
     shortLabel: 'Automotive',
     icon: Car,
     image: getAssetPath('/images/hero/automotive.jpg'),
-    headlineRegular: 'Keep Moving ',
-    headlineAccent: 'with Confidence.',
+    heading: 'Keep Moving with Confidence',
     supportingText: 'Discover trusted mechanics, precision diagnostic garages and verified ceramic detailing studios.',
     queryParam: 'Automotive Care',
   },
@@ -134,12 +128,13 @@ export const HeroSlider: React.FC = () => {
     <section
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative w-full min-h-[580px] sm:min-h-[620px] lg:min-h-[660px] flex items-center overflow-hidden isolate text-white select-none"
+      className="relative w-full min-h-[560px] sm:min-h-[600px] lg:min-h-[640px] flex items-center overflow-hidden isolate text-white select-none"
       aria-roledescription="carousel"
       aria-label="Featured Local Business Highlights"
     >
       {/* =========================================================================
           FULL-WIDTH EDGE-TO-EDGE PHOTOGRAPHIC BACKGROUND (Yelp Immersive Style)
+          Smooth 800ms crossfade with subtle scale effect and next-image preloading
           ========================================================================= */}
       <div className="absolute inset-0 pointer-events-none z-0 transform-gpu">
         {HERO_SLIDES.map((slide, index) => {
@@ -166,57 +161,58 @@ export const HeroSlider: React.FC = () => {
           );
         })}
 
-        {/* Controlled Asymmetric Dark Gradient: Left dark for text contrast, right open for photographic clarity */}
-        <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#17243B]/92 via-[#17243B]/65 via-50% to-[#17243B]/25 pointer-events-none" />
-        <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#17243B]/75 via-transparent to-[#17243B]/40 pointer-events-none" />
+        {/* =======================================================================
+            RESTRAINED BALANCED OVERLAY (YELP-INSPIRED)
+            Consistent visual treatment across the entire viewport.
+            No heavy blue block on the left; image is clearly visible edge-to-edge.
+            ======================================================================= */}
+        <div className="absolute inset-0 z-10 bg-black/45 pointer-events-none" />
+        <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/60 via-transparent to-black/40 pointer-events-none" />
       </div>
 
       {/* =========================================================================
-          HERO MAIN CONTENT CONTAINER (Yelp Balanced International Layout)
+          HERO MAIN CONTENT (Left-Aligned, Simple & Concise)
           ========================================================================= */}
-      <div className="relative z-20 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-32 sm:pt-36 lg:pt-32 pb-16 flex items-center justify-between gap-8">
+      <div className="relative z-20 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-28 sm:pt-32 lg:pt-28 pb-16 flex items-center justify-between gap-8">
         
-        {/* Left Column: Heading, Description, CTA, and Slide Indicators */}
-        <div className="max-w-2xl text-left space-y-6">
+        {/* Left-Aligned Content Column */}
+        <div className="max-w-2xl text-left space-y-5">
           
           {/* Synchronized Dynamic Header Content with smooth 500ms fade */}
           <div
             key={activeSlide.id}
             className="animate-in fade-in duration-500 ease-out space-y-4 motion-reduce:animate-none"
           >
-            {/* Small Featured Category Pill */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-white backdrop-blur-md text-xs font-semibold uppercase tracking-wider border border-white/20 shadow-xs">
+            {/* 1. Small Category Label Pill */}
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/30 text-white backdrop-blur-md text-xs font-semibold uppercase tracking-wider border border-white/20 shadow-xs">
               <activeSlide.icon className="w-3.5 h-3.5 text-[#E66B45]" />
               <span>Featured: {activeSlide.category}</span>
             </div>
 
-            {/* Campaign Heading: Sans-serif bold with editorial serif italic accent word */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.14] drop-shadow-sm">
-              <span>{activeSlide.headlineRegular}</span>
-              <span className="font-display italic text-[#E66B45] ml-1 sm:ml-2 inline transition-colors duration-500">
-                {activeSlide.headlineAccent}
-              </span>
+            {/* 2. Concise Heading (Single Sans-Serif Font, Bold Hierarchy) */}
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.12] drop-shadow-md">
+              {activeSlide.heading}
             </h1>
 
-            {/* Category Supporting Description */}
-            <p className="text-base sm:text-lg text-slate-100/90 font-normal leading-relaxed max-w-xl">
+            {/* 3. Short Supporting Description */}
+            <p className="text-sm sm:text-base lg:text-lg text-white/90 font-normal leading-relaxed max-w-xl drop-shadow-sm">
               {activeSlide.supportingText}
             </p>
 
-            {/* One Prominent CTA Button (No competing second button) */}
+            {/* 4. One Primary Action Button (No competing second button) */}
             <div className="pt-2">
               <Link
                 href={`/search?category=${encodeURIComponent(activeSlide.queryParam)}`}
-                className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl font-bold text-sm bg-[#E66B45] hover:bg-[#d85d37] text-white transition-all shadow-md hover:shadow-xl focus:ring-2 focus:ring-[#E66B45]/50 group"
+                className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl font-bold text-xs sm:text-sm bg-[#E66B45] hover:bg-[#d85d37] text-white transition-all shadow-md hover:shadow-xl focus:ring-2 focus:ring-[#E66B45]/50 group"
               >
-                <span>Browse {activeSlide.category}</span>
+                <span>Explore {activeSlide.category}</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </Link>
             </div>
           </div>
 
-          {/* Vertical/Horizontal Slide Progress Indicators: Clean, clickable, restrained */}
-          <div className="pt-4 flex items-center gap-4">
+          {/* Slide Progress Indicators & Subtle Arrow Controls */}
+          <div className="pt-2 flex items-center gap-4">
             <div
               className="flex items-center gap-2"
               role="tablist"
@@ -252,7 +248,7 @@ export const HeroSlider: React.FC = () => {
                 type="button"
                 onClick={prevSlide}
                 aria-label="Previous slide"
-                className="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer"
+                className="w-7 h-7 rounded-lg bg-black/30 hover:bg-black/50 text-white flex items-center justify-center transition-colors cursor-pointer border border-white/10"
               >
                 <ChevronLeft className="w-3.5 h-3.5" />
               </button>
@@ -260,7 +256,7 @@ export const HeroSlider: React.FC = () => {
                 type="button"
                 onClick={nextSlide}
                 aria-label="Next slide"
-                className="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer"
+                className="w-7 h-7 rounded-lg bg-black/30 hover:bg-black/50 text-white flex items-center justify-center transition-colors cursor-pointer border border-white/10"
               >
                 <ChevronRight className="w-3.5 h-3.5" />
               </button>
@@ -268,7 +264,7 @@ export const HeroSlider: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Area: Intentionally spacious and uncluttered so the photograph shines through */}
+        {/* Right Area: Intentionally spacious so the photograph shines through cleanly */}
         <div className="hidden lg:block flex-1 max-w-sm pointer-events-none" />
       </div>
     </section>

@@ -14,9 +14,9 @@
 export const WHATSAPP_SUPPORT_CONFIG = {
   // Official business WhatsApp number provided by client (leave empty until assigned)
   phoneNumber: '', // e.g. '919876543210'
-  defaultMessage: 'Hello Peak Discount Support! I need assistance with your platform.',
+  defaultMessage: 'Hello Pick Discount Support! I need assistance with your platform.',
   channelLabel: 'WhatsApp Support',
-  supportEmail: 'support@peakdiscount.com',
+  supportEmail: 'support@pickdiscount.com',
   operatingHours: 'Monday - Saturday: 9:00 AM - 8:00 PM IST',
 };
 

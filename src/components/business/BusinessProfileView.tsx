@@ -41,7 +41,7 @@ export function BusinessProfileView({ slug }: BusinessProfileViewProps) {
       rating: 5,
       date: '18 Nov 2026',
       title: 'Prompt service and transparent pricing',
-      comment: 'Really glad I discovered this place on Peak Discount. Everything was handled professionally with complete adherence to scheduled timings.',
+      comment: 'Really glad I discovered this place on Pick Discount. Everything was handled professionally with complete adherence to scheduled timings.',
       helpfulCount: 6,
       verifiedCustomer: true,
       status: 'active' as const,

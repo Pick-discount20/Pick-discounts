@@ -26,7 +26,7 @@ export const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose }) =
         className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden animate-in zoom-in-95 duration-150 text-[#14213D]"
       >
         {/* Header Banner */}
-        <div className="bg-[#14213D] p-6 text-white relative">
+        <div className="bg-[#17243B] p-6 text-white relative">
           <button
             type="button"
             onClick={onClose}
@@ -42,7 +42,7 @@ export const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose }) =
             </div>
             <div>
               <h2 id="support-dialog-title" className="text-base font-bold text-white leading-tight">
-                Peak Discount Support
+                Pick Discount Support
               </h2>
               <p className="text-xs text-slate-300">
                 Direct assistance for consumers & business owners
@@ -79,7 +79,7 @@ export const SupportModal: React.FC<SupportModalProps> = ({ isOpen, onClose }) =
                   <span>Official Support Channel Notice</span>
                 </div>
                 <p>
-                  Peak Discount&apos;s verified WhatsApp customer service channel is currently being provisioned for commercial operations.
+                  Pick Discount&apos;s verified WhatsApp customer service channel is currently being provisioned for commercial operations.
                 </p>
                 <p className="text-[11px] text-amber-800">
                   Once platform administrators connect the business number, you will be able to initiate direct WhatsApp messaging with one click.
