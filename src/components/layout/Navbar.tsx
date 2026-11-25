@@ -156,7 +156,7 @@ export const Navbar: React.FC = () => {
             </div>
 
             {/* CENTRE: UNIFIED SEARCH BAR (What, Where, 5km, Search) */}
-            <div className="hidden lg:flex flex-1 max-w-xl xl:max-w-2xl mx-2 xl:mx-4 min-w-0">
+            <div className="hidden lg:flex flex-1 max-w-xl xl:max-w-2xl mx-1.5 lg:mx-2 xl:mx-4 min-w-0">
               <SearchBar compact={false} />
             </div>
 

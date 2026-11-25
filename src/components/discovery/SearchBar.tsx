@@ -180,11 +180,11 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       {/* =======================================================================
           1. KEYWORD SEARCH INPUT (What)
           ======================================================================= */}
-      <div className="relative flex-1 flex items-center min-w-0 px-3 py-1.5 md:py-1">
+      <div className="relative flex-1 min-w-0 flex items-center px-3 py-1.5 md:py-1">
         <label htmlFor="search-keyword-input" className="sr-only">
           What are you looking for?
         </label>
-        <div className="flex items-center gap-2 w-full">
+        <div className="flex items-center gap-2 w-full min-w-0">
           <Search className="w-4 h-4 text-[#64748B] shrink-0" aria-hidden="true" />
           <input
             id="search-keyword-input"
@@ -202,7 +202,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
             placeholder="What are you looking for?"
             aria-label="What are you looking for?"
             autoComplete="off"
-            className="w-full bg-transparent text-[#17243B] placeholder-slate-400 text-xs sm:text-sm font-medium focus:outline-none"
+            className="w-full min-w-0 bg-transparent text-[#17243B] placeholder-slate-400 text-xs sm:text-sm font-medium focus:outline-none truncate"
           />
         </div>
 
@@ -249,15 +249,20 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 
       {/* =======================================================================
           2. LOCATION SEARCH INPUT (Where)
+          Structured horizontal flex layout:
+          [Location Icon] [Where? + Selected Location] [5 km Badge] [Chevron]
           ======================================================================= */}
-      <div className="relative flex-1 flex items-center min-w-0 px-3 py-1.5 md:py-1 border-t md:border-t-0 border-[#E2E8F0]">
+      <div className="relative flex-1 md:min-w-[210px] lg:min-w-[230px] xl:min-w-[260px] flex items-center min-w-0 px-3 py-1.5 md:py-1 border-t md:border-t-0 border-[#E2E8F0]">
         <label htmlFor="search-location-input" className="sr-only">
           Location: Enter area, locality or pincode
         </label>
-        <div className="flex items-center gap-2 w-full">
-          <MapPin className="w-4 h-4 text-[#E66B45] shrink-0" aria-hidden="true" />
+        <div className="flex items-center gap-2 w-full min-w-0">
+          {/* Location Icon: fixed width ~18px */}
+          <MapPin className="w-[18px] h-[18px] text-[#E66B45] shrink-0" aria-hidden="true" />
+          
+          {/* Flexible Text Container */}
           <div className="flex items-center gap-1.5 flex-1 min-w-0">
-            <span className="text-xs font-bold text-[#64748B] select-none hidden sm:inline">
+            <span className="text-xs font-semibold text-[#64748B] shrink-0 select-none whitespace-nowrap hidden sm:inline">
               Where?
             </span>
             <input
@@ -276,11 +281,11 @@ export const SearchBar: React.FC<SearchBarProps> = ({
               placeholder="Enter area, locality or pincode"
               aria-label="Enter area, locality or pincode"
               autoComplete="off"
-              className="w-full bg-transparent text-[#17243B] placeholder-slate-400 text-xs sm:text-sm font-medium focus:outline-none"
+              className="w-full min-w-0 bg-transparent text-[#17243B] placeholder-slate-400 text-xs sm:text-sm font-medium focus:outline-none truncate"
             />
           </div>
 
-          {/* 5 km Discovery Radius Badge */}
+          {/* 5 km Discovery Radius Badge: non-shrinking pill */}
           <span
             className="shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-[#249C91]/10 text-[#249C91] whitespace-nowrap cursor-default"
             title="Discovery search radius: 5 km"
@@ -288,10 +293,11 @@ export const SearchBar: React.FC<SearchBarProps> = ({
             5 km
           </span>
 
+          {/* Chevron: fixed width & vertically centered */}
           <button
             type="button"
             onClick={() => setLocationDropdownOpen(!locationDropdownOpen)}
-            className="p-1 text-[#64748B] hover:text-[#17243B] focus:outline-none cursor-pointer"
+            className="shrink-0 p-1 text-[#64748B] hover:text-[#17243B] flex items-center justify-center focus:outline-none cursor-pointer"
             aria-label="Toggle location choices"
           >
             <ChevronDown className="w-3.5 h-3.5" />
