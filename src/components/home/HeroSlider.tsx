@@ -4,86 +4,87 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
-  ChevronLeft,
-  ChevronRight,
+  ArrowRight,
+  Pause,
+  Play,
+  LucideIcon,
   UtensilsCrossed,
   Stethoscope,
   Sparkles,
   Home,
   Car,
-  ArrowRight,
-  LucideIcon,
 } from 'lucide-react';
 import { getAssetPath } from '@/utils/assetPath';
 
 interface HeroSlide {
   id: string;
   category: string;
-  shortLabel: string;
-  icon: LucideIcon;
-  image: string;
   heading: string;
   supportingText: string;
+  ctaText: string;
   queryParam: string;
+  image: string;
+  icon: LucideIcon;
 }
 
 const HERO_SLIDES: HeroSlide[] = [
   {
+    id: 'home',
+    category: 'Home Services',
+    heading: 'The gift of a clean home',
+    supportingText: 'Verified cleaners, electricians and bespoke home specialists.',
+    ctaText: 'Home Cleaner',
+    queryParam: 'Home Services',
+    image: getAssetPath('/images/hero/home.jpg'),
+    icon: Home,
+  },
+  {
     id: 'dining',
     category: 'Restaurants & Cafes',
-    shortLabel: 'Dining',
-    icon: UtensilsCrossed,
-    image: getAssetPath('/images/hero/dining.jpg'),
-    heading: 'Discover Places Worth Experiencing',
-    supportingText: 'Find authentic local dining, curated cafes and culinary destinations verified for quality.',
+    heading: 'A night out to remember',
+    supportingText: 'Top-rated authentic dining, curated cafes and culinary destinations.',
+    ctaText: 'Fine Dining',
     queryParam: 'Restaurants & Cafes',
+    image: getAssetPath('/images/hero/dining.jpg'),
+    icon: UtensilsCrossed,
   },
   {
     id: 'healthcare',
     category: 'Healthcare & Clinics',
-    shortLabel: 'Healthcare',
-    icon: Stethoscope,
-    image: getAssetPath('/images/hero/healthcare.jpg'),
-    heading: 'Find Care You Can Trust',
-    supportingText: 'Connect with certified doctors, diagnostic centres and licensed medical specialists with verified credentials.',
+    heading: 'Find care you can trust',
+    supportingText: 'Certified doctors, sterile clinics and licensed dental specialists.',
+    ctaText: 'Dentists & Clinics',
     queryParam: 'Healthcare & Clinics',
+    image: getAssetPath('/images/hero/healthcare.jpg'),
+    icon: Stethoscope,
   },
   {
     id: 'beauty',
     category: 'Beauty & Wellness',
-    shortLabel: 'Wellness',
-    icon: Sparkles,
-    image: getAssetPath('/images/hero/beauty.jpg'),
-    heading: 'Make Time for a Better You',
-    supportingText: 'Explore top-rated luxury spas, modern hair salons and holistic wellness therapists.',
+    heading: 'Make time for a better you',
+    supportingText: 'Explore luxury spas, modern hair salons and holistic wellness therapists.',
+    ctaText: 'Spas & Salons',
     queryParam: 'Beauty & Wellness',
-  },
-  {
-    id: 'home',
-    category: 'Home Services',
-    shortLabel: 'Home Care',
-    icon: Home,
-    image: getAssetPath('/images/hero/home.jpg'),
-    heading: 'Find the Right Experts for Your Home',
-    supportingText: 'Book verified electricians, licensed contractors, plumbers and bespoke interior specialists.',
-    queryParam: 'Home Services',
+    image: getAssetPath('/images/hero/beauty.jpg'),
+    icon: Sparkles,
   },
   {
     id: 'automotive',
     category: 'Automotive Care',
-    shortLabel: 'Automotive',
-    icon: Car,
-    image: getAssetPath('/images/hero/automotive.jpg'),
-    heading: 'Keep Moving with Confidence',
-    supportingText: 'Discover trusted mechanics, precision diagnostic garages and verified ceramic detailing studios.',
+    heading: 'Keep moving with confidence',
+    supportingText: 'Precision diagnostic garages, trusted mechanics and ceramic studios.',
+    ctaText: 'Auto Service',
     queryParam: 'Automotive Care',
+    image: getAssetPath('/images/hero/automotive.jpg'),
+    icon: Car,
   },
 ];
 
-const AUTOPLAY_INTERVAL = 4000; // 4 seconds per slide for natural reading pace
+const AUTOPLAY_INTERVAL = 5500; // 5.5 seconds per slide (Yelp timing)
 
 export const HeroSlider: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
   const slideCount = HERO_SLIDES.length;
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -93,19 +94,14 @@ export const HeroSlider: React.FC = () => {
     setCurrentSlide((prev) => (prev + 1) % slideCount);
   }, [slideCount]);
 
-  // Go to previous slide
-  const prevSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev - 1 + slideCount) % slideCount);
-  }, [slideCount]);
-
   // Jump to specific slide
   const goToSlide = useCallback((index: number) => {
     setCurrentSlide(index);
   }, []);
 
-  // Autoplay management: transitions every 4s, pauses on hover, respects reduced motion
+  // Autoplay management
   useEffect(() => {
-    if (isHovered) {
+    if (!isPlaying || isHovered) {
       if (timerRef.current) clearInterval(timerRef.current);
       return;
     }
@@ -120,7 +116,7 @@ export const HeroSlider: React.FC = () => {
         timerRef.current = null;
       }
     };
-  }, [currentSlide, isHovered, nextSlide]);
+  }, [currentSlide, isPlaying, isHovered, nextSlide]);
 
   const activeSlide = HERO_SLIDES[currentSlide];
 
@@ -128,12 +124,12 @@ export const HeroSlider: React.FC = () => {
     <section
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative w-full min-h-[560px] sm:min-h-[600px] lg:min-h-[640px] flex items-center overflow-hidden isolate text-white select-none"
+      className="relative w-full h-screen min-h-[640px] flex items-end overflow-hidden isolate text-white select-none"
       aria-roledescription="carousel"
-      aria-label="Featured Local Business Highlights"
+      aria-label="Featured Local Businesses"
     >
       {/* =========================================================================
-          FULL-WIDTH EDGE-TO-EDGE PHOTOGRAPHIC BACKGROUND (Yelp Immersive Style)
+          FULL-SCREEN 100VH PHOTOGRAPHIC BACKGROUND
           Smooth 800ms crossfade with subtle scale effect and next-image preloading
           ========================================================================= */}
       <div className="absolute inset-0 pointer-events-none z-0 transform-gpu">
@@ -153,7 +149,7 @@ export const HeroSlider: React.FC = () => {
                 fill
                 priority={index === 0 || isNext}
                 sizes="100vw"
-                className={`object-cover object-center transition-transform duration-[7000ms] ease-out will-change-transform motion-reduce:transition-none ${
+                className={`object-cover object-center transition-transform duration-[8000ms] ease-out will-change-transform motion-reduce:transition-none ${
                   isActive ? 'scale-105' : 'scale-100'
                 }`}
               />
@@ -166,106 +162,93 @@ export const HeroSlider: React.FC = () => {
             Subtle balanced overlay allowing the photograph to shine through edge-to-edge.
             No heavy one-sided blue gradients; provides clean contrast for white text.
             ======================================================================= */}
-        <div className="absolute inset-0 z-10 bg-slate-950/25 pointer-events-none" />
-        <div className="absolute inset-0 z-10 bg-gradient-to-t from-slate-950/50 via-transparent to-slate-950/20 pointer-events-none" />
+        <div className="absolute inset-0 z-10 bg-black/30 pointer-events-none" />
+        <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/80 via-black/20 to-black/35 pointer-events-none" />
       </div>
 
       {/* =========================================================================
-          HERO MAIN CONTENT (Left-Aligned, Simple & Concise)
+          HERO CONTENT ROW: VERTICAL SLIDE INDICATORS + YELP CAPTION & CTA
+          Positioned in the lower portion of the full-screen 100vh hero
           ========================================================================= */}
-      <div className="relative z-20 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-32 sm:pt-36 lg:pt-36 pb-20 flex items-center justify-between gap-8">
-        
-        {/* Left-Aligned Content Column */}
-        <div className="max-w-2xl text-left space-y-5">
+      <div className="relative z-20 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pb-16 sm:pb-20 lg:pb-24">
+        <div className="flex items-center gap-6 sm:gap-8 max-w-3xl">
           
-          {/* Synchronized Dynamic Header Content with smooth 500ms fade */}
+          {/* =====================================================================
+              YELP-INSPIRED VERTICAL SLIDE INDICATORS (Left-aligned)
+              ===================================================================== */}
+          <div
+            className="flex flex-col items-center gap-2.5 shrink-0"
+            role="tablist"
+            aria-label="Slideshow progress indicators"
+          >
+            {HERO_SLIDES.map((slide, idx) => {
+              const isActive = idx === currentSlide;
+              return (
+                <button
+                  key={slide.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  aria-label={`Go to slide ${idx + 1}: ${slide.heading}`}
+                  onClick={() => goToSlide(idx)}
+                  className="group py-1 focus:outline-none cursor-pointer"
+                >
+                  <span
+                    className={`block w-1.5 rounded-full transition-all duration-300 ${
+                      isActive
+                        ? 'h-9 sm:h-11 bg-white shadow-lg'
+                        : 'h-6 sm:h-7 bg-white/35 group-hover:bg-white/70 group-hover:h-8'
+                    }`}
+                  />
+                </button>
+              );
+            })}
+
+            {/* Play/Pause Button */}
+            <button
+              type="button"
+              onClick={() => setIsPlaying(!isPlaying)}
+              aria-label={isPlaying ? 'Pause slideshow' : 'Play slideshow'}
+              className="mt-2 w-7 h-7 rounded-full bg-black/40 hover:bg-black/60 text-white flex items-center justify-center transition-colors cursor-pointer border border-white/20 focus:outline-none"
+              title={isPlaying ? 'Pause autoplay' : 'Resume autoplay'}
+            >
+              {isPlaying ? (
+                <Pause className="w-3 h-3 text-white/90" />
+              ) : (
+                <Play className="w-3 h-3 text-white/90 ml-0.5" />
+              )}
+            </button>
+          </div>
+
+          {/* =====================================================================
+              HERO CAPTION & COMPACT RED/CORAL CTA (Yelp Visual Hierarchy)
+              ===================================================================== */}
           <div
             key={activeSlide.id}
-            className="animate-in fade-in duration-500 ease-out space-y-4 motion-reduce:animate-none"
+            className="space-y-4 animate-in fade-in duration-500 ease-out motion-reduce:animate-none min-w-0"
           >
-            {/* 1. Small Category Label Pill */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/25 text-white backdrop-blur-md text-xs font-semibold uppercase tracking-wider border border-white/20 shadow-xs">
-              <activeSlide.icon className="w-3.5 h-3.5 text-[#E66B45]" />
-              <span>Featured: {activeSlide.category}</span>
-            </div>
-
-            {/* 2. Concise Heading (Single Sans-Serif Font, Bold Hierarchy) */}
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.12] drop-shadow-md">
+            {/* 1. Large, Bold, White Sans-Serif Headline */}
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.1] drop-shadow-md">
               {activeSlide.heading}
             </h1>
 
-            {/* 3. Short Supporting Description */}
-            <p className="text-sm sm:text-base lg:text-lg text-white/95 font-normal leading-relaxed max-w-xl drop-shadow-sm">
+            {/* 2. Short Supporting Caption */}
+            <p className="text-sm sm:text-base lg:text-lg text-white/90 font-normal leading-relaxed max-w-xl drop-shadow-sm">
               {activeSlide.supportingText}
             </p>
 
-            {/* 4. One Primary Action Button (No competing second button) */}
+            {/* 3. One Compact Red/Coral CTA Button */}
             <div className="pt-2">
               <Link
                 href={`/search?category=${encodeURIComponent(activeSlide.queryParam)}`}
-                className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl font-bold text-xs sm:text-sm bg-[#E66B45] hover:bg-[#d85d37] text-white transition-all shadow-md hover:shadow-xl focus:ring-2 focus:ring-[#E66B45]/50 group"
+                className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl font-bold text-xs sm:text-sm bg-[#E66B45] hover:bg-[#d85d37] text-white transition-all shadow-lg hover:shadow-xl focus:ring-2 focus:ring-[#E66B45]/50 group"
               >
-                <span>Explore {activeSlide.category}</span>
+                <span>{activeSlide.ctaText}</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </Link>
             </div>
           </div>
-
-          {/* Slide Progress Indicators & Subtle Arrow Controls */}
-          <div className="pt-3 flex items-center gap-4">
-            <div
-              className="flex items-center gap-2"
-              role="tablist"
-              aria-label="Slide Indicator Progress"
-            >
-              {HERO_SLIDES.map((slide, idx) => {
-                const isActive = idx === currentSlide;
-                return (
-                  <button
-                    key={slide.id}
-                    type="button"
-                    role="tab"
-                    aria-selected={isActive}
-                    aria-label={`Go to slide ${idx + 1}: ${slide.category}`}
-                    onClick={() => goToSlide(idx)}
-                    className="group py-2 focus:outline-none cursor-pointer"
-                  >
-                    <span
-                      className={`block rounded-full transition-all duration-300 ${
-                        isActive
-                          ? 'w-8 h-1.5 bg-[#E66B45] shadow-xs'
-                          : 'w-3 h-1.5 bg-white/40 group-hover:bg-white/70 group-hover:w-5'
-                      }`}
-                    />
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Subtle Slide Prev/Next Arrow Controls */}
-            <div className="flex items-center gap-1.5 pl-2 border-l border-white/20">
-              <button
-                type="button"
-                onClick={prevSlide}
-                aria-label="Previous slide"
-                className="w-7 h-7 rounded-lg bg-black/25 hover:bg-black/45 text-white flex items-center justify-center transition-colors cursor-pointer border border-white/15"
-              >
-                <ChevronLeft className="w-3.5 h-3.5" />
-              </button>
-              <button
-                type="button"
-                onClick={nextSlide}
-                aria-label="Next slide"
-                className="w-7 h-7 rounded-lg bg-black/25 hover:bg-black/45 text-white flex items-center justify-center transition-colors cursor-pointer border border-white/15"
-              >
-                <ChevronRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          </div>
         </div>
-
-        {/* Right Area: Intentionally spacious so the photograph shines through cleanly */}
-        <div className="hidden lg:block flex-1 max-w-sm pointer-events-none" />
       </div>
     </section>
   );
