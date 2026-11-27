@@ -168,9 +168,9 @@ export const HeroSlider: React.FC = () => {
 
       {/* =========================================================================
           HERO CONTENT ROW: VERTICAL SLIDE INDICATORS + YELP CAPTION & CTA
-          Positioned in the lower portion of the full-screen 100vh hero
+          Positioned with balanced vertical spacing below the homepage navigation bar
           ========================================================================= */}
-      <div className="relative z-20 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pb-16 sm:pb-20 lg:pb-24">
+      <div className="relative z-20 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pb-28 sm:pb-36 lg:pb-48">
         <div className="flex items-center gap-6 sm:gap-8 max-w-3xl">
           
           {/* =====================================================================

@@ -15,9 +15,9 @@ import {
   HelpCircle,
   Tag,
   ShieldCheck,
+  Headset,
 } from 'lucide-react';
 import { SearchBar } from '@/components/discovery/SearchBar';
-import { WhatsAppIcon } from '@/components/common/WhatsAppIcon';
 import { SupportModal } from '@/components/layout/SupportModal';
 import { getWhatsAppSupportUrl } from '@/config/support';
 
@@ -28,21 +28,10 @@ export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [supportModalOpen, setSupportModalOpen] = useState(false);
   const [businessDropdownOpen, setBusinessDropdownOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
 
-  const isHome = pathname === '/';
+  // The navigation bar belongs strictly to the homepage hero section
+  const isHome = pathname === '/' || pathname === '' || pathname === '/Pick-discounts' || pathname === '/Pick-discounts/';
   const navContainerRef = useRef<HTMLDivElement>(null);
-
-  // Scroll detection for sticky header transition
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-
-    handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   // Close dropdowns on outside click or Escape key
   useEffect(() => {
@@ -84,13 +73,15 @@ export const Navbar: React.FC = () => {
     }
   };
 
-  // Header styling: Transparent over hero, clean solid white on scroll or subpages
-  const isTransparentOverHero = isHome && !scrolled;
-  const headerClass = isHome
-    ? scrolled
-      ? 'fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#E2E8F0] text-[#17243B] shadow-xs transition-all duration-300'
-      : 'absolute top-0 left-0 right-0 z-50 bg-transparent border-b border-white/10 text-white transition-all duration-300'
-    : 'sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#E2E8F0] text-[#17243B] shadow-xs transition-all duration-300';
+  // The navigation bar must appear only on the homepage hero section. It must not appear on other pages.
+  if (!isHome) {
+    return null;
+  }
+
+  // Anchored to the top of the homepage hero section, scrolling away naturally with page content.
+  // Not position: fixed, not position: sticky.
+  const isTransparentOverHero = true;
+  const headerClass = 'absolute top-0 left-0 right-0 z-30 bg-transparent text-white';
 
   return (
     <>
@@ -109,7 +100,7 @@ export const Navbar: React.FC = () => {
                 className="flex items-center group focus:outline-none focus:ring-2 focus:ring-[#249C91] rounded-lg py-1 pr-2"
                 aria-label="Pick Discount Homepage"
               >
-                <span className="text-xl sm:text-2xl font-black tracking-tight font-sans transition-colors">
+                <span className="text-2xl sm:text-[26px] xl:text-[28px] font-black tracking-tight font-sans transition-colors">
                   <span className={isTransparentOverHero ? 'text-white' : 'text-[#17243B]'}>PICK</span>
                   <span className="text-[#249C91] ml-1">DISCOUNT</span>
                 </span>
@@ -122,14 +113,14 @@ export const Navbar: React.FC = () => {
             </div>
 
             {/* 3–8. ACTIONS & NAVIGATION IN REQUIRED ORDER */}
-            <nav className="hidden lg:flex items-center gap-1 xl:gap-2.5 shrink-0 text-xs font-semibold whitespace-nowrap">
+            <nav className="hidden lg:flex items-center gap-1 xl:gap-2 shrink-0 text-[13px] xl:text-sm font-semibold whitespace-nowrap">
               
               {/* 3. Pick Discount for Business (Dropdown) */}
               <div className="relative">
                 <button
                   type="button"
                   onClick={() => setBusinessDropdownOpen(!businessDropdownOpen)}
-                  className={`px-2.5 py-2 rounded-lg transition-colors flex items-center gap-1 cursor-pointer ${
+                  className={`px-2 xl:px-2.5 py-2 rounded-lg transition-colors flex items-center gap-1 cursor-pointer ${
                     businessDropdownOpen
                       ? isTransparentOverHero
                         ? 'bg-white/20 text-white'
@@ -219,7 +210,7 @@ export const Navbar: React.FC = () => {
               {/* 4. Rate & Reviews */}
               <Link
                 href="/search?intent=review"
-                className={`px-2.5 py-2 rounded-lg transition-colors flex items-center gap-1.5 ${
+                className={`px-2 xl:px-2.5 py-2 rounded-lg transition-colors flex items-center gap-1.5 ${
                   isTransparentOverHero
                     ? 'text-white/90 hover:text-white hover:bg-white/10'
                     : 'text-[#17243B] hover:text-[#249C91] hover:bg-slate-50'
@@ -233,7 +224,7 @@ export const Navbar: React.FC = () => {
               {/* 5. Deal Alerts */}
               <Link
                 href="/search?deals=true"
-                className={`px-2.5 py-2 rounded-lg transition-colors flex items-center gap-1.5 ${
+                className={`px-2 xl:px-2.5 py-2 rounded-lg transition-colors flex items-center gap-1.5 ${
                   isTransparentOverHero
                     ? 'text-white/90 hover:text-white hover:bg-white/10'
                     : 'text-[#17243B] hover:text-[#249C91] hover:bg-slate-50'
@@ -244,27 +235,25 @@ export const Navbar: React.FC = () => {
                 <span>Deal Alerts</span>
               </Link>
 
-              {/* 6. Support (WhatsApp) */}
+              {/* 6. Support */}
               <button
                 type="button"
                 onClick={handleSupportClick}
-                className={`px-2.5 py-2 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer ${
+                className={`px-2 xl:px-2.5 py-2 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer ${
                   isTransparentOverHero
                     ? 'text-white/90 hover:text-white hover:bg-white/10'
                     : 'text-[#17243B] hover:text-[#249C91] hover:bg-slate-50'
                 }`}
-                aria-label="Contact Customer Support on WhatsApp"
+                aria-label="Customer Support"
               >
-                <div className="w-4 h-4 rounded-full bg-[#25D366] text-white flex items-center justify-center shrink-0">
-                  <WhatsAppIcon className="w-2.5 h-2.5 fill-white" />
-                </div>
+                <Headset className="w-3.5 h-3.5 text-[#249C91]" />
                 <span>Support</span>
               </button>
 
               {/* 7. Log In */}
               <Link
                 href="/login"
-                className={`px-2.5 py-2 rounded-lg transition-colors flex items-center gap-1.5 ${
+                className={`px-2 xl:px-2.5 py-2 rounded-lg transition-colors flex items-center gap-1.5 ${
                   isTransparentOverHero
                     ? 'text-white/90 hover:text-white hover:bg-white/10'
                     : 'text-[#17243B] hover:text-[#249C91] hover:bg-slate-50'
@@ -277,22 +266,22 @@ export const Navbar: React.FC = () => {
               {/* 8. Sign Up */}
               <Link
                 href="/register"
-                className="px-3.5 py-2 rounded-xl font-bold bg-[#249C91] text-white hover:bg-[#1f7e75] transition-all shadow-xs hover:shadow focus:ring-2 focus:ring-[#249C91]/50 flex items-center gap-1.5"
+                className="px-3 xl:px-3.5 py-2 rounded-xl font-bold bg-[#249C91] text-white hover:bg-[#1f7e75] transition-all shadow-xs hover:shadow focus:ring-2 focus:ring-[#249C91]/50 flex items-center gap-1.5"
               >
                 <UserCheck className="w-3.5 h-3.5" />
                 <span>Sign Up</span>
               </Link>
             </nav>
 
-            {/* MOBILE HEADER SHORTCUTS (Search Trigger + WhatsApp + Hamburger) */}
+            {/* MOBILE HEADER SHORTCUTS (Support + Hamburger) */}
             <div className="flex lg:hidden items-center gap-2">
               <button
                 type="button"
                 onClick={handleSupportClick}
-                className="p-2 rounded-xl bg-[#25D366]/15 text-[#25D366] hover:bg-[#25D366]/25 transition-colors cursor-pointer"
-                aria-label="Support on WhatsApp"
+                className="p-2 rounded-xl bg-white/10 text-white hover:bg-white/20 transition-colors cursor-pointer"
+                aria-label="Customer Support"
               >
-                <WhatsAppIcon className="w-5 h-5 fill-current" />
+                <Headset className="w-5 h-5 text-[#249C91]" />
               </button>
 
               <button
@@ -325,7 +314,7 @@ export const Navbar: React.FC = () => {
               <Link
                 href="/register"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-xs font-bold bg-[#249C91] text-white hover:bg-[#1f7e75] shadow-xs"
+                className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-sm font-bold bg-[#249C91] text-white hover:bg-[#1f7e75] shadow-xs"
               >
                 <UserCheck className="w-4 h-4" />
                 <span>Sign Up</span>
@@ -334,7 +323,7 @@ export const Navbar: React.FC = () => {
               <Link
                 href="/login"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-xs font-semibold bg-slate-100 text-[#17243B] hover:bg-slate-200"
+                className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-sm font-semibold bg-slate-100 text-[#17243B] hover:bg-slate-200"
               >
                 <LogIn className="w-4 h-4 text-[#64748B]" />
                 <span>Log In</span>
@@ -346,7 +335,7 @@ export const Navbar: React.FC = () => {
               <Link
                 href="/search?intent=review"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-bold text-[#17243B] hover:bg-slate-50"
+                className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold text-[#17243B] hover:bg-slate-50"
               >
                 <Star className="w-4 h-4 text-[#E66B45]" />
                 <span>Rate &amp; Reviews</span>
@@ -355,7 +344,7 @@ export const Navbar: React.FC = () => {
               <Link
                 href="/search?deals=true"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-bold text-[#17243B] hover:bg-slate-50"
+                className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold text-[#17243B] hover:bg-slate-50"
               >
                 <Tag className="w-4 h-4 text-[#249C91]" />
                 <span>Deal Alerts</span>
@@ -367,24 +356,22 @@ export const Navbar: React.FC = () => {
                   setMobileMenuOpen(false);
                   handleSupportClick();
                 }}
-                className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-bold text-[#17243B] hover:bg-slate-50 text-left cursor-pointer"
+                className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold text-[#17243B] hover:bg-slate-50 text-left cursor-pointer"
               >
-                <div className="w-5 h-5 rounded-full bg-[#25D366] text-white flex items-center justify-center shrink-0">
-                  <WhatsAppIcon className="w-3 h-3 fill-white" />
-                </div>
-                <span>Support (WhatsApp)</span>
+                <Headset className="w-4 h-4 text-[#249C91]" />
+                <span>Support</span>
               </button>
             </div>
 
             {/* Pick Discount for Business Accordion */}
             <div className="space-y-1">
-              <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#64748B]">
+              <div className="px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-[#64748B]">
                 Pick Discount for Business
               </div>
               <Link
                 href="/owner/claim"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-[#17243B] hover:bg-slate-50"
+                className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium text-[#17243B] hover:bg-slate-50"
               >
                 <ShieldCheck className="w-4 h-4 text-[#249C91]" />
                 <span>Add a Business</span>
@@ -392,7 +379,7 @@ export const Navbar: React.FC = () => {
               <Link
                 href="/login"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-[#17243B] hover:bg-slate-50"
+                className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium text-[#17243B] hover:bg-slate-50"
               >
                 <Building2 className="w-4 h-4 text-[#64748B]" />
                 <span>Log In to Business Account</span>
@@ -400,7 +387,7 @@ export const Navbar: React.FC = () => {
               <Link
                 href="/owner/help"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-[#17243B] hover:bg-slate-50"
+                className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium text-[#17243B] hover:bg-slate-50"
               >
                 <HelpCircle className="w-4 h-4 text-amber-600" />
                 <span>Explore Help for Business</span>

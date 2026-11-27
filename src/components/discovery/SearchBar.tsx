@@ -104,7 +104,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         placeholder="Hidden gem locals love"
         aria-label="Search businesses"
         autoComplete="off"
-        className="w-full h-full bg-transparent text-[#17243B] placeholder-slate-400 text-xs sm:text-sm font-medium focus:outline-none"
+        className="w-full h-full bg-transparent text-[#17243B] placeholder-slate-500 text-sm sm:text-[15px] font-medium focus:outline-none"
       />
 
       {/* Autocomplete Suggestions Dropdown: Anchored directly below search field */}

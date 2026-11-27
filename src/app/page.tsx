@@ -75,7 +75,7 @@ export default function HomePage() {
   const featuredBusinesses = DEMO_BUSINESSES.filter((b) => b.featured).slice(0, 4);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F8FAFC]">
+    <div className="min-h-screen flex flex-col bg-[#F8FAFC] relative">
       <DemoDisclaimer />
       <Navbar />
 
@@ -86,33 +86,7 @@ export default function HomePage() {
         <HeroSlider />
 
         {/* =========================================================================
-            2. TRUST METRICS STRIP (Directly Beneath Hero)
-            ========================================================================= */}
-        <section className="bg-white border-b border-[#E2E8F0] py-6">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 divide-y sm:divide-y-0 sm:divide-x divide-slate-100">
-              <div className="text-center py-2 px-3">
-                <div className="text-2xl sm:text-3xl font-black text-[#17243B] tracking-tight">100%</div>
-                <div className="text-xs text-[#64748B] font-semibold mt-1">Physical Verification</div>
-              </div>
-              <div className="text-center py-2 px-3">
-                <div className="text-2xl sm:text-3xl font-black text-[#249C91] tracking-tight">4.8★</div>
-                <div className="text-xs text-[#64748B] font-semibold mt-1">Average Rated Quality</div>
-              </div>
-              <div className="text-center py-2 px-3">
-                <div className="text-2xl sm:text-3xl font-black text-[#E66B45] tracking-tight">1,200+</div>
-                <div className="text-xs text-[#64748B] font-semibold mt-1">Local Businesses</div>
-              </div>
-              <div className="text-center py-2 px-3">
-                <div className="text-2xl sm:text-3xl font-black text-[#17243B] tracking-tight">Zero</div>
-                <div className="text-xs text-[#64748B] font-semibold mt-1">Unmoderated Fake Reviews</div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* =========================================================================
-            3. CATEGORY DISCOVERY SECTION
+            2. CATEGORY DISCOVERY SECTION
             ========================================================================= */}
         <section id="categories" className="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
